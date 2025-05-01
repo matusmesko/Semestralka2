@@ -6,14 +6,14 @@ public abstract class Hero {
     private int intelligence;
     private int luck;
     private int health;
-    private int strength;
+    private int power;
 
     public Hero() {
         this.name = "";
         this.intelligence = 0;
         this.luck = 0;
         this.health = 0;
-        this.strength = 0;
+        this.power = 0;
     }
 
     public int getLuck() {
@@ -32,8 +32,8 @@ public abstract class Hero {
         return health;
     }
 
-    public int getStrength() {
-        return strength;
+    public int getPower() {
+        return power;
     }
 
     public abstract void useAbility();

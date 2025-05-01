@@ -4,14 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
 import mesko.matus.hero.Hero;
 import mesko.matus.hero.impl.Warrior;
 import mesko.matus.hero.impl.Wizard;
+import mesko.matus.player.Player;
 import mesko.matus.ui.ArrowButton;
 import mesko.matus.ui.WoodenButton;
 import mesko.matus.utils.Utils;
@@ -32,18 +30,29 @@ public class HeroSelectionPanel extends JPanel {
     private Hero selectedHero;
 
     /**
-     * Creates a new hero selection panel
+     * Panel for choosing hero for player
+     */
+    private JPanel parentPanel;
+
+    /**
+     * Panel for choosing hero for player
      */
     public HeroSelectionPanel() {
-        // Initialize heroes list
+        this(null);
+    }
+
+    /**
+     * Panel for choosing hero for player
+     * @param parentPanel The parent panel to return to after selection
+     */
+    public HeroSelectionPanel(JPanel parentPanel) {
+        this.parentPanel = parentPanel;
         heroes = new ArrayList<>();
         heroes.add(new Warrior());
         heroes.add(new Wizard());
 
-        // Set panel properties
-        setLayout(new BorderLayout());
 
-        // Create hero image panel (center)
+        setLayout(new BorderLayout());
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setOpaque(false);
 
@@ -52,12 +61,10 @@ public class HeroSelectionPanel extends JPanel {
         imagePanel.add(heroImageLabel, BorderLayout.CENTER);
         add(imagePanel, BorderLayout.CENTER);
 
-        // Create stats panel (south)
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
         southPanel.setOpaque(false);
 
-        // Stats display
         statsPanel = new JPanel();
         statsPanel.setLayout(new GridLayout(5, 1, 5, 5));
         statsPanel.setBorder(BorderFactory.createTitledBorder("Hero Stats"));
@@ -77,7 +84,6 @@ public class HeroSelectionPanel extends JPanel {
 
         southPanel.add(statsPanel);
 
-        // Choose button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
 
@@ -86,10 +92,26 @@ public class HeroSelectionPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 selectedHero = heroes.get(currentHeroIndex);
-                JOptionPane.showMessageDialog(HeroSelectionPanel.this, 
-                    "You selected: " + selectedHero.getName(), 
-                    "Hero Selected", 
-                    JOptionPane.INFORMATION_MESSAGE);
+
+                // Create a Player instance with the selected hero
+                Player player = new Player(selectedHero);
+
+                // Get the parent container
+                Container parent = HeroSelectionPanel.this.getParent();
+
+                // Create the game panel with the player
+                GamePanel gamePanel = new GamePanel(player);
+
+                // Replace this panel with the game panel
+                if (parent != null) {
+                    parent.remove(HeroSelectionPanel.this);
+                    parent.add(gamePanel, BorderLayout.CENTER);
+                    parent.revalidate();
+                    parent.repaint();
+
+                    // Request focus for the game panel to receive key events
+                    gamePanel.requestFocusInWindow();
+                }
             }
         });
 
@@ -115,9 +137,7 @@ public class HeroSelectionPanel extends JPanel {
         buttonPanel.add(rightArrow);
         buttonPanel.add(chooseButton);
         southPanel.add(buttonPanel);
-
         add(southPanel, BorderLayout.SOUTH);
-
         updateHeroDisplay();
     }
 
@@ -125,13 +145,13 @@ public class HeroSelectionPanel extends JPanel {
 
 
     /**
-     * Updates the display with the current hero's information and image
+     * Updates hero image and statistics
      */
     private void updateHeroDisplay() {
         Hero currentHero = heroes.get(currentHeroIndex);
         nameLabel.setText("Name: " + currentHero.getName());
         healthLabel.setText("Health: " + currentHero.getHealth());
-        strengthLabel.setText("Strength: " + currentHero.getStrength());
+        strengthLabel.setText("Strength: " + currentHero.getPower());
         intelligenceLabel.setText("Intelligence: " + currentHero.getIntelligence());
         luckLabel.setText("Luck: " + currentHero.getLuck());
 
@@ -162,7 +182,7 @@ public class HeroSelectionPanel extends JPanel {
 
     /**
      * Get the currently selected hero
-     * @return the selected hero
+     * @return Hero the selected hero
      */
     public Hero getSelectedHero() {
         return selectedHero;

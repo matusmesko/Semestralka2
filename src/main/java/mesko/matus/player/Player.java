@@ -12,14 +12,14 @@ public class Player {
     private int coins;
     private Hero hero;
 
-    public Player() {
+    public Player(Hero hero) {
         inventory = new PlayerInventory();
-        health = 100;
-        power = 0;
-        intelligence = 0;
-        luck = 0;
-        coins = 0;
-        hero = null;
+        this.hero = hero;
+        health = hero.getHealth() + 100;
+        power = hero.getPower();
+        intelligence = hero.getIntelligence();
+        luck = hero.getLuck() + 20;
+        coins = 500;
     }
 
     public PlayerInventory getInventory() {

@@ -15,7 +15,7 @@ public class Warrior extends Hero {
     }
 
     @Override
-    public int getStrength() {
+    public int getPower() {
         return 50;
     }
 

@@ -31,6 +31,7 @@ public class Main {
         JFrame frame = new JFrame(GAME_TITLE);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        frame.setResizable(false);
         frame.setLocationRelativeTo(null);
         JPanel mainPanel = new BackgroundPanel();
         mainPanel.setLayout(new BorderLayout());
