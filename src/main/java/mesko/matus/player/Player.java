@@ -1,6 +1,7 @@
 package mesko.matus.player;
 
 import mesko.matus.hero.Hero;
+import mesko.matus.items.consumable.impl.HealthPotion;
 
 public class Player {
 
@@ -20,6 +21,7 @@ public class Player {
         intelligence = hero.getIntelligence();
         luck = hero.getLuck() + 20;
         coins = 500;
+        inventory.addItem(new HealthPotion());
     }
 
     public PlayerInventory getInventory() {

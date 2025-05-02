@@ -14,4 +14,9 @@ public class HealthPotion implements ConsumableItem {
     public void useItem(Player player) {
         player.setHealth(player.getHealth() + 10);
     }
+
+    @Override
+    public String getImagePath() {
+        return "/items/healthpotion.png";
+    }
 }

@@ -13,4 +13,9 @@ public class PowerPotion implements ConsumableItem {
     public void useItem(Player player) {
         player.setPower(player.getPower() + 10);
     }
+
+    @Override
+    public String getImagePath() {
+        return "/items/powerpotion.png";
+    }
 }

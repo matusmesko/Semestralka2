@@ -12,4 +12,9 @@ public class IntelligencePotion implements ConsumableItem {
     public void useItem(mesko.matus.player.Player player) {
         player.setIntelligence(player.getIntelligence() + 10);
     }
+
+    @Override
+    public String getImagePath() {
+        return "/items/intelligencepotion.png";
+    }
 }
