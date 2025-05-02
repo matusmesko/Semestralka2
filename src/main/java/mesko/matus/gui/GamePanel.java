@@ -10,6 +10,9 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import mesko.matus.areas.Area;
+import mesko.matus.areas.ShopArea;
+import mesko.matus.areas.DungeonArea;
 import mesko.matus.player.Player;
 
 /**
@@ -26,18 +29,14 @@ public class GamePanel extends JPanel implements KeyListener {
     private int characterSize = 100;
     private int moveSpeed = 5;
 
-    // Shop area
-    private Rectangle shopArea = new Rectangle(150, 150, 100, 100);
-    private boolean inShopArea = false;
-    private boolean shopOpen = false;
-
-    // Dungeon area
-    private Rectangle dungeonArea = new Rectangle(550, 150, 100, 100);
+    // Game areas
+    private ShopArea shopArea;
+    private DungeonArea dungeonArea;
 
     // Game area dimensions
     private int gameWidth = 800;
     private int gameHeight = 500;
-    
+
 
     /**
      * Creates a new game panel with the player
@@ -49,6 +48,10 @@ public class GamePanel extends JPanel implements KeyListener {
         setOpaque(false);
         setFocusable(true);
         addKeyListener(this);
+
+        // Initialize game areas
+        shopArea = new ShopArea(150, 150, 100, 100, this);
+        dungeonArea = new DungeonArea(550, 150, 100, 100, this);
 
         // Create game area panel (this will be painted in paintComponent)
         JPanel gameAreaPanel = new JPanel() {
@@ -67,12 +70,12 @@ public class GamePanel extends JPanel implements KeyListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 repaint();
-                checkShopCollision();
+                checkAreaCollisions();
             }
         });
         gameTimer.start();
-        
-        
+
+
 
         // Request focus to receive key events
         requestFocusInWindow();
@@ -96,21 +99,9 @@ public class GamePanel extends JPanel implements KeyListener {
         g2d.setColor(new Color(200, 230, 255));
         g2d.fillRect(0, 0, getWidth(), getHeight());
 
-        // Draw shop area
-        g2d.setColor(new Color(150, 100, 50));
-        g2d.fill(shopArea);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(shopArea);
-        g2d.setColor(Color.WHITE);
-        g2d.drawString("Shop", shopArea.x + 35, shopArea.y + 55);
-
-        // Draw dungeon area
-        g2d.setColor(new Color(100, 100, 100));
-        g2d.fill(dungeonArea);
-        g2d.setColor(Color.BLACK);
-        g2d.draw(dungeonArea);
-        g2d.setColor(Color.WHITE);
-        g2d.drawString("Dungeon", dungeonArea.x + 25, dungeonArea.y + 55);
+        // Draw game areas
+        shopArea.draw(g2d);
+        dungeonArea.draw(g2d);
 
         drawPlayer(g2d);
     }
@@ -127,9 +118,9 @@ public class GamePanel extends JPanel implements KeyListener {
     }
 
     /**
-     * Check if character is in shop area and open shop if needed
+     * Check if character is in shop or dungeon area and trigger appropriate actions
      */
-    private void checkShopCollision() {
+    private void checkAreaCollisions() {
         Rectangle characterBounds = new Rectangle(
             characterX - characterSize/2, 
             characterY - characterSize/2, 
@@ -137,25 +128,9 @@ public class GamePanel extends JPanel implements KeyListener {
             characterSize
         );
 
-        boolean wasInShopArea = inShopArea;
-        inShopArea = characterBounds.intersects(shopArea);
-
-        // If character just entered shop area, open shop
-        if (inShopArea && !wasInShopArea && !shopOpen) {
-            openShop();
-        }
-    }
-
-    /**
-     * Open the shop dialog
-     */
-    private void openShop() {
-        shopOpen = true;
-        JOptionPane.showMessageDialog(this, 
-            "Welcome to the shop!\nItems will be available in future updates.", 
-            "Shop", 
-            JOptionPane.INFORMATION_MESSAGE);
-        shopOpen = false;
+        // Check for shop and dungeon collisions
+        shopArea.checkPlayerCollision(characterBounds);
+        dungeonArea.checkPlayerCollision(characterBounds);
     }
 
     /**
@@ -187,10 +162,14 @@ public class GamePanel extends JPanel implements KeyListener {
             case KeyEvent.VK_RIGHT:
                 characterX = Math.min(characterX + moveSpeed, gameWidth - characterSize/2);
                 break;
+            case KeyEvent.VK_I:
+                // Show inventory panel when 'I' is pressed
+                showInventoryPanel();
+                return; // Return early to avoid collision check and repaint
         }
 
-        // Check for collision with shop
-        checkShopCollision();
+        // Check for collisions with game areas
+        checkAreaCollisions();
 
         // Repaint the game area
         repaint();
@@ -202,5 +181,24 @@ public class GamePanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         // Not used
+    }
+
+    /**
+     * Show the inventory panel with player stats and items
+     */
+    private void showInventoryPanel() {
+        // Get the parent container
+        Container parent = this.getParent();
+
+        // Create the inventory panel with the player and this panel as parent
+        InventoryPanel inventoryPanel = new InventoryPanel(player, this);
+
+        // Replace this panel with the inventory panel
+        if (parent != null) {
+            parent.remove(this);
+            parent.add(inventoryPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+        }
     }
 }
