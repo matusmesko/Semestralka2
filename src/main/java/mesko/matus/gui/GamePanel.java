@@ -14,6 +14,7 @@ import mesko.matus.areas.Area;
 import mesko.matus.areas.ShopArea;
 import mesko.matus.areas.DungeonArea;
 import mesko.matus.player.Player;
+import mesko.matus.gui.ShopPanel;
 
 /**
  * Game panel displayed after hero selection
@@ -87,17 +88,25 @@ public class GamePanel extends JPanel implements KeyListener {
     private void paintGameArea(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
+        BufferedImage backgroundImage = null;
         BufferedImage playerImage = null;
 
         try {
+            backgroundImage = ImageIO.read(getClass().getResourceAsStream("/grass.png"));
             playerImage = ImageIO.read(getClass().getResourceAsStream("/" + player.getHero().getName().toLowerCase() + ".png"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            g2d.setColor(new Color(200, 230, 255));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+            return;
         }
 
-        // Draw background
-        g2d.setColor(new Color(200, 230, 255));
-        g2d.fillRect(0, 0, getWidth(), getHeight());
+        if (backgroundImage != null) {
+            g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+        } else {
+            g2d.setColor(new Color(200, 230, 255));
+            g2d.fillRect(0, 0, getWidth(), getHeight());
+        }
 
         // Draw game areas
         shopArea.draw(g2d);
@@ -105,6 +114,28 @@ public class GamePanel extends JPanel implements KeyListener {
 
         drawPlayer(g2d);
     }
+
+//    private void paintGameArea(Graphics g) {
+//        Graphics2D g2d = (Graphics2D) g;
+//
+//        BufferedImage playerImage = null;
+//
+//        try {
+//            playerImage = ImageIO.read(getClass().getResourceAsStream("/" + player.getHero().getName().toLowerCase() + ".png"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        // Draw background
+//        g2d.setColor(new Color(200, 230, 255));
+//        g2d.fillRect(0, 0, getWidth(), getHeight());
+//
+//        // Draw game areas
+//        shopArea.draw(g2d);
+//        dungeonArea.draw(g2d);
+//
+//        drawPlayer(g2d);
+//    }
 
 
     private void drawPlayer(Graphics2D g2d) {
@@ -200,5 +231,31 @@ public class GamePanel extends JPanel implements KeyListener {
             parent.revalidate();
             parent.repaint();
         }
+    }
+
+    /**
+     * Show the shop panel with items for sale
+     */
+    public void showShopPanel() {
+        // Get the parent container
+        Container parent = this.getParent();
+
+        // Create the shop panel with the player and this panel as parent
+        ShopPanel shopPanel = new ShopPanel(player, this);
+
+        // Replace this panel with the shop panel
+        if (parent != null) {
+            parent.remove(this);
+            parent.add(shopPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+        }
+    }
+
+    /**
+     * Reset the shop open state so it can be reopened
+     */
+    public void resetShopOpenState() {
+        shopArea.resetShopOpenState();
     }
 }

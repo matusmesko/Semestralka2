@@ -2,7 +2,10 @@ package mesko.matus.gui;
 
 import mesko.matus.items.Item;
 import mesko.matus.items.consumable.ConsumableItem;
+import mesko.matus.items.wearable.WearableItem;
+import mesko.matus.items.wearable.WearableItemType;
 import mesko.matus.player.Player;
+import mesko.matus.ui.WoodenButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +27,7 @@ public class InventoryPanel extends JPanel {
     private JPanel parentPanel;
     private JPanel statsPanel;
     private JPanel inventoryPanel;
+    private JPanel equippedItemsPanel;
 
     /**
      * Creates a new inventory panel
@@ -44,22 +48,32 @@ public class InventoryPanel extends JPanel {
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
         add(titleLabel, BorderLayout.NORTH);
 
-        // Main content panel
-        JPanel contentPanel = new JPanel(new GridLayout(1, 2, 20, 0));
+        // Main content panel with 2 rows
+        JPanel contentPanel = new JPanel(new GridLayout(2, 1, 0, 20));
         contentPanel.setOpaque(false);
+
+        // Top row with stats and equipped items
+        JPanel topRow = new JPanel(new GridLayout(1, 2, 20, 0));
+        topRow.setOpaque(false);
 
         // Stats panel
         createStatsPanel();
-        contentPanel.add(statsPanel);
+        topRow.add(statsPanel);
 
-        // Inventory panel
+        // Equipped items panel
+        createEquippedItemsPanel();
+        topRow.add(equippedItemsPanel);
+
+        contentPanel.add(topRow);
+
+        // Inventory panel in bottom row
         createInventoryPanel();
         contentPanel.add(inventoryPanel);
 
         add(contentPanel, BorderLayout.CENTER);
 
         // Close button
-        JButton closeButton = new JButton("Close Inventory");
+        JButton closeButton = new WoodenButton("Close Inventory", 300, 50, 15);
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,6 +131,47 @@ public class InventoryPanel extends JPanel {
     }
 
     /**
+     * Creates the panel displaying equipped items
+     */
+    private void createEquippedItemsPanel() {
+        equippedItemsPanel = new JPanel(new GridLayout(3, 1, 0, 10));
+        equippedItemsPanel.setBorder(BorderFactory.createTitledBorder("Equipped Items"));
+        equippedItemsPanel.setOpaque(false);
+
+        // Create slots for each wearable item type (HEAD, BODY, LEGS)
+        for (WearableItemType type : WearableItemType.values()) {
+            JPanel slotPanel = new JPanel(new BorderLayout());
+            slotPanel.setBorder(BorderFactory.createTitledBorder(type.name()));
+            slotPanel.setPreferredSize(new Dimension(100, 100));
+
+            // Get the equipped item for this slot
+            WearableItem equippedItem = player.getEquippedItem(type);
+
+            if (equippedItem != null) {
+                // Display the equipped item
+                createItemDisplay(slotPanel, equippedItem);
+
+                // Add click listener to unequip
+                slotPanel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        player.unequipItem(type);
+                        refreshPanels();
+                    }
+                });
+            } else {
+                // Empty slot
+                slotPanel.setBackground(new Color(220, 220, 220));
+                JLabel emptyLabel = new JLabel("Empty");
+                emptyLabel.setHorizontalAlignment(JLabel.CENTER);
+                slotPanel.add(emptyLabel, BorderLayout.CENTER);
+            }
+
+            equippedItemsPanel.add(slotPanel);
+        }
+    }
+
+    /**
      * Creates the panel displaying player inventory
      */
     private void createInventoryPanel() {
@@ -130,63 +185,35 @@ public class InventoryPanel extends JPanel {
 
         // Create item slots (6 max)
         for (int i = 0; i < 6; i++) {
-            JPanel itemSlot = new JPanel();
-            itemSlot.setLayout(new BoxLayout(itemSlot, BoxLayout.Y_AXIS));
+            JPanel itemSlot = new JPanel(new BorderLayout());
             itemSlot.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             itemSlot.setPreferredSize(new Dimension(80, 80));
-
 
             if (i < items.size() && items.get(i) != null) {
                 // Display item
                 Item item = items.get(i);
+                createItemDisplay(itemSlot, item);
 
-                // Try to load and display the item image
-                String imagePath = item.getImagePath();
-                if (imagePath != null) {
-                    try {
-                        BufferedImage itemImage = ImageIO.read(getClass().getResourceAsStream(imagePath));
-                        if (itemImage != null) {
-                            // Scale the image to fit the slot
-                            Image scaledImage = itemImage.getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-                            JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-                            imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                            itemSlot.add(imageLabel);
-                        }
-                    } catch (IOException e) {
-                        System.err.println("Failed to load image for item: " + item.getName());
-                    }
-                }
-
-                // Display item name
-                JLabel itemLabel = new JLabel(item.getName());
-                itemLabel.setHorizontalAlignment(JLabel.CENTER);
-                itemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                itemLabel.setFont(new Font("Arial", Font.PLAIN, 10)); // Smaller font to fit with image
-                itemSlot.add(itemLabel);
-
+                // Add click listener for item use/equip
                 itemSlot.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        if (item instanceof ConsumableItem consumableItem) {
-                            consumableItem.useItem(player);
-                            player.getInventory().removeItem(consumableItem);
 
-                            // Recreate both panels to reflect updated state
-                            JPanel contentPanel = (JPanel) inventoryPanel.getParent();
-                            contentPanel.removeAll();
+                        if (e.getButton() == MouseEvent.BUTTON1) {
+                            if (item instanceof ConsumableItem consumableItem) {
+                                consumableItem.useItem(player);
+                                player.getInventory().removeItem(consumableItem);
+                                refreshPanels();
+                            } else if (item instanceof WearableItem wearableItem) {
 
-                            // Create new panels
-                            createStatsPanel();
-                            createInventoryPanel();
-
-                            // Add them back to the content panel
-                            contentPanel.add(statsPanel);
-                            contentPanel.add(inventoryPanel);
-
-                            // Update the UI
-                            contentPanel.revalidate();
-                            contentPanel.repaint();
+                                player.equipItem(wearableItem);
+                                refreshPanels();
+                            }
+                        }else if (e.getButton() == MouseEvent.BUTTON3) {
+                            player.getInventory().removeItem(item);
+                            refreshPanels();
                         }
+
                     }
                 });
             } else {
@@ -195,6 +222,87 @@ public class InventoryPanel extends JPanel {
             }
 
             inventoryPanel.add(itemSlot);
+        }
+    }
+
+    /**
+     * Helper method to create an item display in a panel
+     * @param panel The panel to add the item display to
+     * @param item The item to display
+     */
+    private void createItemDisplay(JPanel panel, Item item) {
+        // Try to load and display the item image
+        String imagePath = item.getImagePath();
+        if (imagePath != null) {
+            try {
+                BufferedImage itemImage = ImageIO.read(getClass().getResourceAsStream(imagePath));
+                if (itemImage != null) {
+                    // Scale the image to fill the entire slot
+                    Image scaledImage = itemImage.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                    JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+                    panel.add(imageLabel, BorderLayout.CENTER);
+
+                    // Display item name as overlay at the bottom of the image
+                    JLabel itemLabel = new JLabel(item.getName());
+                    itemLabel.setHorizontalAlignment(JLabel.CENTER);
+                    itemLabel.setFont(new Font("Arial", Font.BOLD, 10));
+                    itemLabel.setForeground(Color.WHITE); // White text for better visibility
+                    // Add a dark semi-transparent background for better text readability
+                    itemLabel.setOpaque(true);
+                    itemLabel.setBackground(new Color(0, 0, 0, 150));
+                    panel.add(itemLabel, BorderLayout.SOUTH);
+                }
+            } catch (IOException e) {
+                System.err.println("Failed to load image for item: " + item.getName());
+
+                // If image fails to load, just show the name
+                JLabel itemLabel = new JLabel(item.getName());
+                itemLabel.setHorizontalAlignment(JLabel.CENTER);
+                panel.add(itemLabel, BorderLayout.CENTER);
+            }
+        } else {
+            // No image path, just show the name
+            JLabel itemLabel = new JLabel(item.getName());
+            itemLabel.setHorizontalAlignment(JLabel.CENTER);
+            panel.add(itemLabel, BorderLayout.CENTER);
+        }
+
+        panel.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                JPanel parent = (JPanel) e.getSource();
+                parent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                parent.revalidate();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                JPanel parent = (JPanel) e.getSource();
+                parent.setCursor(Cursor.getDefaultCursor());
+                parent.revalidate();
+            }
+        });
+    }
+
+    /**
+     * Refreshes all panels to reflect the current state
+     */
+    private void refreshPanels() {
+        // Get the parent container
+        Container parent = this.getParent();
+
+        // Remove this panel
+        if (parent != null) {
+            parent.remove(this);
+
+            // Create a new inventory panel
+            InventoryPanel newPanel = new InventoryPanel(player, parentPanel);
+
+            // Add the new panel
+            parent.add(newPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
         }
     }
 }

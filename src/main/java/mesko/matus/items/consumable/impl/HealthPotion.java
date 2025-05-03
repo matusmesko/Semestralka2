@@ -19,4 +19,9 @@ public class HealthPotion implements ConsumableItem {
     public String getImagePath() {
         return "/items/healthpotion.png";
     }
+
+    @Override
+    public int getPrize() {
+        return 50;
+    }
 }

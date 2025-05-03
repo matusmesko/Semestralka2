@@ -1,6 +1,7 @@
 package mesko.matus.items.wearable.impl;
 
 import mesko.matus.items.wearable.WearableItem;
+import mesko.matus.items.wearable.WearableItemType;
 
 public class GoldenArmor implements WearableItem {
 
@@ -27,5 +28,20 @@ public class GoldenArmor implements WearableItem {
     @Override
     public int addHealth() {
         return 50;
+    }
+
+    @Override
+    public String getImagePath() {
+        return "/items/goldenarmor.png";
+    }
+
+    @Override
+    public WearableItemType getWearableItemType() {
+        return WearableItemType.BODY;
+    }
+
+    @Override
+    public int getPrize() {
+        return 200;
     }
 }

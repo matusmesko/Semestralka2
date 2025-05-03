@@ -11,4 +11,6 @@ public interface Item {
     default String getImagePath() {
         return null;
     }
+
+    int getPrize();
 }

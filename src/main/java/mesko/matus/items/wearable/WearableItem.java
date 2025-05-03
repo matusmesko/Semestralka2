@@ -10,4 +10,5 @@ public interface WearableItem extends Item {
     int addIntelligence();
     int addLuck();
     int addHealth();
+    WearableItemType getWearableItemType();
 }

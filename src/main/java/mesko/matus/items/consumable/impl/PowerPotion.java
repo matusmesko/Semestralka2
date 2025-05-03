@@ -18,4 +18,9 @@ public class PowerPotion implements ConsumableItem {
     public String getImagePath() {
         return "/items/powerpotion.png";
     }
+
+    @Override
+    public int getPrize() {
+        return 75;
+    }
 }

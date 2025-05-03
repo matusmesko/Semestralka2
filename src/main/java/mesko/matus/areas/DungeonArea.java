@@ -11,7 +11,7 @@ public class DungeonArea extends Area {
     private boolean isPlayerInside = false;
     private boolean isDungeonOpen = false;
     private Component parent;
-    
+
     /**
      * Creates a new dungeon area with the specified properties
      * 
@@ -22,10 +22,10 @@ public class DungeonArea extends Area {
      * @param parent The parent component for dialog boxes
      */
     public DungeonArea(int x, int y, int width, int height, Component parent) {
-        super(x, y, width, height, "Dungeon", new Color(100, 100, 100), Color.BLACK, Color.WHITE);
+        super(x, y, width, height, "Dungeon", "/dungeonicon.png");
         this.parent = parent;
     }
-    
+
     /**
      * Checks if the player has entered or exited the dungeon area
      * and triggers appropriate actions
@@ -36,15 +36,15 @@ public class DungeonArea extends Area {
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = isPlayerInside;
         isPlayerInside = intersects(characterBounds);
-        
+
         // If player just entered the area and dungeon isn't open, open it
         if (isPlayerInside && !wasInside && !isDungeonOpen) {
             onPlayerEnter();
         }
-        
+
         return isPlayerInside;
     }
-    
+
     /**
      * Called when the player enters the dungeon area
      * Opens the dungeon entrance dialog
@@ -52,7 +52,7 @@ public class DungeonArea extends Area {
     private void onPlayerEnter() {
         openDungeon();
     }
-    
+
     /**
      * Opens the dungeon entrance dialog
      */
@@ -64,7 +64,7 @@ public class DungeonArea extends Area {
             JOptionPane.INFORMATION_MESSAGE);
         isDungeonOpen = false;
     }
-    
+
     /**
      * Checks if the player is currently inside the dungeon area
      * 

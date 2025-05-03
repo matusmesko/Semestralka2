@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="inf2Semestralka:jar">
+    <output-path>$PROJECT_DIR$/../..</output-path>
+    <root id="archive" name="inf2Semestralka.jar">
+      <element id="module-output" name="inf2Semestralka" />
+    </root>
+  </artifact>
+</component>

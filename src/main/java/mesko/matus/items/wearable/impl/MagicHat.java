@@ -3,11 +3,10 @@ package mesko.matus.items.wearable.impl;
 import mesko.matus.items.wearable.WearableItem;
 import mesko.matus.items.wearable.WearableItemType;
 
-public class MagicCloak implements WearableItem {
-
+public class MagicHat implements WearableItem {
     @Override
     public String getName() {
-        return "Magic Cloak";
+        return "Magic Hat";
     }
 
     @Override
@@ -22,26 +21,26 @@ public class MagicCloak implements WearableItem {
 
     @Override
     public int addLuck() {
-        return 5;
+        return 15;
     }
 
     @Override
     public int addHealth() {
-        return 10;
-    }
-
-    @Override
-    public String getImagePath() {
-        return "/items/magiccloak.png";
+        return 5;
     }
 
     @Override
     public WearableItemType getWearableItemType() {
-        return WearableItemType.BODY;
+        return WearableItemType.HEAD;
+    }
+
+    @Override
+    public String getImagePath() {
+        return "/items/magichat.png";
     }
 
     @Override
     public int getPrize() {
-        return 200;
+        return 100;
     }
 }
