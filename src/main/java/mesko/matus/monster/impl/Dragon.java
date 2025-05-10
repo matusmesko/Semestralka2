@@ -3,9 +3,12 @@ package mesko.matus.monster.impl;
 import mesko.matus.monster.Monster;
 import mesko.matus.player.Player;
 
-public class Zombie implements Monster {
-    private int health = 100;
-    private final String name = "Zombie";
+/**
+ * A Dragon monster with high difficulty
+ */
+public class Dragon implements Monster {
+    private int health = 300;
+    private final String name = "Dragon";
 
     @Override
     public String getName() {
@@ -24,7 +27,7 @@ public class Zombie implements Monster {
 
     @Override
     public void damagePlayer(Player player) {
-        player.setHealth(player.getHealth() - 10);
+        player.setHealth(player.getHealth() - 25);
     }
 
     @Override
@@ -34,6 +37,6 @@ public class Zombie implements Monster {
 
     @Override
     public int getRewardCoins() {
-        return 50; // Easiest monster gives least coins
+        return 200; // Hardest monster gives most coins
     }
 }

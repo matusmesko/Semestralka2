@@ -2,6 +2,7 @@ package mesko.matus.areas;
 
 import javax.swing.*;
 import java.awt.*;
+import mesko.matus.gui.GamePanel;
 
 /**
  * Represents a dungeon entrance area on the game screen
@@ -54,15 +55,22 @@ public class DungeonArea extends Area {
     }
 
     /**
-     * Opens the dungeon entrance dialog
+     * Opens the dungeon panel
      */
     private void openDungeon() {
         isDungeonOpen = true;
-        JOptionPane.showMessageDialog(parent, 
-            "Welcome to the dungeon!\nMonsters await in future updates.", 
-            "Dungeon", 
-            JOptionPane.INFORMATION_MESSAGE);
-        isDungeonOpen = false;
+
+        // Check if parent is a GamePanel and show the dungeon panel
+        if (parent instanceof GamePanel) {
+            ((GamePanel) parent).showDungeonPanel();
+        } else {
+            // Fallback to message dialog if parent is not a GamePanel
+            JOptionPane.showMessageDialog(parent, 
+                "Welcome to the dungeon!\nMonsters await in future updates.", 
+                "Dungeon", 
+                JOptionPane.INFORMATION_MESSAGE);
+            isDungeonOpen = false;
+        }
     }
 
     /**
@@ -72,5 +80,12 @@ public class DungeonArea extends Area {
      */
     public boolean isPlayerInside() {
         return isPlayerInside;
+    }
+
+    /**
+     * Resets the dungeon open state so it can be reopened
+     */
+    public void resetDungeonOpenState() {
+        isDungeonOpen = false;
     }
 }

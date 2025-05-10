@@ -258,4 +258,30 @@ public class GamePanel extends JPanel implements KeyListener {
     public void resetShopOpenState() {
         shopArea.resetShopOpenState();
     }
+
+    /**
+     * Reset the dungeon open state so it can be reopened
+     */
+    public void resetDungeonOpenState() {
+        dungeonArea.resetDungeonOpenState();
+    }
+
+    /**
+     * Show the dungeon panel with monsters to fight
+     */
+    public void showDungeonPanel() {
+        // Get the parent container
+        Container parent = this.getParent();
+
+        // Create the dungeon panel with the player and this panel as parent
+        DungeonPanel dungeonPanel = new DungeonPanel(player, this);
+
+        // Replace this panel with the dungeon panel
+        if (parent != null) {
+            parent.remove(this);
+            parent.add(dungeonPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+        }
+    }
 }

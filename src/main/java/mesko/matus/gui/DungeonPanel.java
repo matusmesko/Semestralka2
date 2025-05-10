@@ -1,0 +1,169 @@
+package mesko.matus.gui;
+
+import mesko.matus.monster.Monster;
+import mesko.matus.monster.impl.Zombie;
+import mesko.matus.monster.impl.Skeleton;
+import mesko.matus.monster.impl.Dragon;
+import mesko.matus.player.Player;
+import mesko.matus.ui.WoodenButton;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Panel for selecting monsters to fight in the dungeon
+ */
+public class DungeonPanel extends JPanel {
+    private Player player;
+    private JPanel parentPanel;
+    private List<Monster> monsters;
+
+    /**
+     * Creates a new dungeon panel with the player and parent panel
+     * @param player The player
+     * @param parentPanel The parent panel to return to
+     */
+    public DungeonPanel(Player player, JPanel parentPanel) {
+        this.player = player;
+        this.parentPanel = parentPanel;
+        this.monsters = new ArrayList<>();
+        
+        // Initialize monsters
+        monsters.add(new Zombie());
+        monsters.add(new Skeleton());
+        monsters.add(new Dragon());
+        
+        // Set up the panel
+        setLayout(new BorderLayout());
+        setBackground(new Color(50, 50, 50));
+        
+        // Create title
+        JLabel titleLabel = new JLabel("Dungeon - Choose Your Enemy", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        add(titleLabel, BorderLayout.NORTH);
+        
+        // Create monster selection panel
+        JPanel monsterPanel = new JPanel(new GridLayout(monsters.size(), 1, 10, 10));
+        monsterPanel.setOpaque(false);
+        monsterPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        
+        // Add monster buttons
+        for (Monster monster : monsters) {
+            JPanel monsterItemPanel = createMonsterPanel(monster);
+            monsterPanel.add(monsterItemPanel);
+        }
+        
+        // Add monster panel to a scroll pane
+        JScrollPane scrollPane = new JScrollPane(monsterPanel);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        add(scrollPane, BorderLayout.CENTER);
+        
+        // Create return button
+        WoodenButton returnButton = new WoodenButton("Return to Game");
+        returnButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                returnToGame();
+            }
+        });
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(returnButton);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        add(buttonPanel, BorderLayout.SOUTH);
+    }
+    
+    /**
+     * Creates a panel for a monster with its information and a fight button
+     * @param monster The monster to create a panel for
+     * @return The monster panel
+     */
+    private JPanel createMonsterPanel(Monster monster) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(new Color(70, 70, 70));
+        panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
+        
+        // Monster info
+        JPanel infoPanel = new JPanel(new GridLayout(2, 1));
+        infoPanel.setOpaque(false);
+        
+        JLabel nameLabel = new JLabel(monster.getName(), JLabel.CENTER);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        nameLabel.setForeground(Color.WHITE);
+        
+        JLabel statsLabel = new JLabel("Health: " + monster.getHealth() + " | Reward: " + monster.getRewardCoins() + " coins", JLabel.CENTER);
+        statsLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        statsLabel.setForeground(Color.WHITE);
+        
+        infoPanel.add(nameLabel);
+        infoPanel.add(statsLabel);
+        panel.add(infoPanel, BorderLayout.CENTER);
+        
+        // Fight button
+        WoodenButton fightButton = new WoodenButton("Fight!");
+        fightButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startBattle(monster);
+            }
+        });
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
+        buttonPanel.add(fightButton);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+        
+        return panel;
+    }
+    
+    /**
+     * Starts a battle with the selected monster
+     * @param monster The monster to fight
+     */
+    private void startBattle(Monster monster) {
+        // Get the parent container
+        Container parent = this.getParent();
+        
+        // Create the battle panel with the player, monster, and this panel as parent
+        BattlePanel battlePanel = new BattlePanel(player, monster, this);
+        
+        // Replace this panel with the battle panel
+        if (parent != null) {
+            parent.remove(this);
+            parent.add(battlePanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+        }
+    }
+    
+    /**
+     * Return to the game panel
+     */
+    private void returnToGame() {
+        Container parent = this.getParent();
+        
+        if (parent != null) {
+            parent.remove(this);
+            parent.add(parentPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+            
+            // Reset dungeon open state so it can be reopened
+            if (parentPanel instanceof GamePanel) {
+                ((GamePanel) parentPanel).resetDungeonOpenState();
+            }
+            
+            // Request focus for the game panel to receive key events
+            parentPanel.requestFocusInWindow();
+        }
+    }
+}
