@@ -7,8 +7,15 @@ import mesko.matus.player.Player;
  * A Skeleton monster with medium difficulty
  */
 public class Skeleton implements Monster {
-    private int health = 150;
-    private final String name = "Skeleton";
+    private int health;
+    private String name;
+    private int power;
+
+    public Skeleton() {
+        this.name = "Skeleton";
+        this.health = 150;
+        this.power = 50;
+    }
 
     @Override
     public String getName() {
@@ -26,8 +33,8 @@ public class Skeleton implements Monster {
     }
 
     @Override
-    public void damagePlayer(Player player) {
-        player.setHealth(player.getHealth() - 15);
+    public int getPower() {
+        return power;
     }
 
     @Override

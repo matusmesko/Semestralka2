@@ -95,7 +95,6 @@ public class GamePanel extends JPanel implements KeyListener {
             backgroundImage = ImageIO.read(getClass().getResourceAsStream("/grass.png"));
             playerImage = ImageIO.read(getClass().getResourceAsStream("/" + player.getHero().getName().toLowerCase() + ".png"));
         } catch (IOException e) {
-            e.printStackTrace();
             g2d.setColor(new Color(200, 230, 255));
             g2d.fillRect(0, 0, getWidth(), getHeight());
             return;
@@ -115,27 +114,6 @@ public class GamePanel extends JPanel implements KeyListener {
         drawPlayer(g2d);
     }
 
-//    private void paintGameArea(Graphics g) {
-//        Graphics2D g2d = (Graphics2D) g;
-//
-//        BufferedImage playerImage = null;
-//
-//        try {
-//            playerImage = ImageIO.read(getClass().getResourceAsStream("/" + player.getHero().getName().toLowerCase() + ".png"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        // Draw background
-//        g2d.setColor(new Color(200, 230, 255));
-//        g2d.fillRect(0, 0, getWidth(), getHeight());
-//
-//        // Draw game areas
-//        shopArea.draw(g2d);
-//        dungeonArea.draw(g2d);
-//
-//        drawPlayer(g2d);
-//    }
 
 
     private void drawPlayer(Graphics2D g2d) {
@@ -153,9 +131,9 @@ public class GamePanel extends JPanel implements KeyListener {
      */
     private void checkAreaCollisions() {
         Rectangle characterBounds = new Rectangle(
-            characterX - characterSize/2, 
-            characterY - characterSize/2, 
-            characterSize, 
+            characterX - characterSize/2,
+            characterY - characterSize/2,
+            characterSize,
             characterSize
         );
 

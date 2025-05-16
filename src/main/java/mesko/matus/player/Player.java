@@ -4,6 +4,10 @@ import mesko.matus.hero.Hero;
 import mesko.matus.items.consumable.impl.HealthPotion;
 import mesko.matus.items.wearable.WearableItem;
 import mesko.matus.items.wearable.WearableItemType;
+import mesko.matus.monster.Monster;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Player {
 
@@ -14,6 +18,7 @@ public class Player {
     private int luck;
     private int coins;
     private Hero hero;
+    private Set<String> defeatedMonsters;
 
     public Player(Hero hero) {
         inventory = new PlayerInventory();
@@ -22,21 +27,32 @@ public class Player {
         power = hero.getPower();
         intelligence = hero.getIntelligence();
         luck = hero.getLuck() + 20;
-        coins = 500;
-        inventory.addItem(new HealthPotion());
+        coins = 200;
+        inventory.addItem(new HealthPotion(100));
+        this.defeatedMonsters = new HashSet<>();
+    }
+
+    /**
+     * Checks if the player has defeated a specific monster
+     * @param monsterName The name of the monster to check
+     * @return true if the monster has been defeated, false otherwise
+     */
+    public boolean hasDefeatedMonster(String monsterName) {
+        return defeatedMonsters.contains(monsterName);
+    }
+
+    /**
+     * Marks a monster as defeated
+     * @param monster The monster to mark as defeated
+     */
+    public void defeatMonster(Monster monster) {
+        defeatedMonsters.add(monster.getName());
     }
 
     public PlayerInventory getInventory() {
         return inventory;
     }
 
-    public void setHero(Hero hero) {
-        this.hero = hero;
-    }
-
-    public void setInventory(PlayerInventory inventory) {
-        this.inventory = inventory;
-    }
 
     public int getHealth() {
         int totalHealth = health;

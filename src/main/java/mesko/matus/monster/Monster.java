@@ -6,7 +6,7 @@ public interface Monster {
     String getName();
     int getHealth();
     void setHealth(int health);
-    void damagePlayer(Player player);
+    int getPower();
     boolean isDefeated();
     int getRewardCoins();
 }

@@ -5,23 +5,40 @@ import mesko.matus.player.Player;
 
 public class HealthPotion implements ConsumableItem {
 
+    private String name;
+    private String imagePath;
+    private int prize;
+    private int healthBonus;
+
+    public HealthPotion() {
+        this.name = "Health Potion";
+        this.imagePath = "/items/healthpotion.png";
+        this.prize = 50;
+        this.healthBonus = 10;
+    }
+
+    public HealthPotion(int healthBonus) {
+        this();
+        this.healthBonus = healthBonus;
+    }
+
     @Override
     public String getName() {
-        return "Health Potion";
+        return this.name;
     }
 
     @Override
     public void useItem(Player player) {
-        player.setHealth(player.getHealth() + 10);
+        player.setHealth(player.getHealth() + this.healthBonus);
     }
 
     @Override
     public String getImagePath() {
-        return "/items/healthpotion.png";
+        return this.imagePath;
     }
 
     @Override
     public int getPrize() {
-        return 50;
+        return this.prize;
     }
 }

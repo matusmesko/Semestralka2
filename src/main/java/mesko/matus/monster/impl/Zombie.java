@@ -4,8 +4,15 @@ import mesko.matus.monster.Monster;
 import mesko.matus.player.Player;
 
 public class Zombie implements Monster {
-    private int health = 100;
-    private final String name = "Zombie";
+    private int health;
+    private String name;
+    private int power;
+
+    public Zombie() {
+        this.name = "Zombie";
+        this.health = 100;
+        this.power = 25;
+    }
 
     @Override
     public String getName() {
@@ -23,8 +30,8 @@ public class Zombie implements Monster {
     }
 
     @Override
-    public void damagePlayer(Player player) {
-        player.setHealth(player.getHealth() - 10);
+    public int getPower() {
+        return power;
     }
 
     @Override
