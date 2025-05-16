@@ -48,11 +48,11 @@ public class ShopPanel extends JPanel {
 
 
         // Initialize shop items
-        initializeShopItems();
+        this.initializeShopItems();
 
         // Set up the panel
-        setLayout(new BorderLayout());
-        setBackground(new Color(139, 69, 19)); // Brown background for shop
+        this.setLayout(new BorderLayout());
+        this.setBackground(new Color(139, 69, 19)); // Brown background for shop
 
         // Create header panel with title and back button
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -70,14 +70,14 @@ public class ShopPanel extends JPanel {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                returnToGame();
+                ShopPanel.this.returnToGame();
             }
         });
         headerPanel.add(backButton, BorderLayout.EAST);
 
         // Add coins display with coin image
-        coinsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        coinsPanel.setOpaque(false);
+        this.coinsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        this.coinsPanel.setOpaque(false);
 
         // Load coin image
         try {
@@ -85,24 +85,24 @@ public class ShopPanel extends JPanel {
             if (coinImage != null) {
                 Image scaledCoin = coinImage.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
                 JLabel coinImageLabel = new JLabel(new ImageIcon(scaledCoin));
-                coinsPanel.add(coinImageLabel);
+                this.coinsPanel.add(coinImageLabel);
             }
         } catch (IOException e) {
             System.err.println("Failed to load coin image");
         }
 
         // Add coins text
-        coinsLabel = new JLabel(player.getCoins() + "", JLabel.LEFT);
-        coinsLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        coinsLabel.setForeground(Color.YELLOW);
-        coinsPanel.add(coinsLabel);
+        this.coinsLabel = new JLabel(player.getCoins() + "", JLabel.LEFT);
+        this.coinsLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        this.coinsLabel.setForeground(Color.YELLOW);
+        this.coinsPanel.add(this.coinsLabel);
 
-        headerPanel.add(coinsPanel, BorderLayout.WEST);
+        headerPanel.add(this.coinsPanel, BorderLayout.WEST);
 
-        add(headerPanel, BorderLayout.NORTH);
+        this.add(headerPanel, BorderLayout.NORTH);
 
         // Create shop items panel
-        createShopItemsPanel();
+        this.createShopItemsPanel();
 
         // Create info panel
         JPanel infoPanel = new JPanel();
@@ -112,7 +112,7 @@ public class ShopPanel extends JPanel {
         infoLabel.setForeground(Color.WHITE);
         infoPanel.add(infoLabel);
 
-        add(infoPanel, BorderLayout.SOUTH);
+        this.add(infoPanel, BorderLayout.SOUTH);
     }
 
 
@@ -120,35 +120,35 @@ public class ShopPanel extends JPanel {
      * Initialize the items available in the shop
      */
     private void initializeShopItems() {
-        shopItems = new ArrayList<>();
-        shopItems.add(new HealthPotion());
-        shopItems.add(new PowerPotion());
-        shopItems.add(new IntelligencePotion());
-        shopItems.add(new GoldenArmor());
-        shopItems.add(new MagicCloak());
-        shopItems.add(new MagicHat());
+        this.shopItems = new ArrayList<>();
+        this.shopItems.add(new HealthPotion());
+        this.shopItems.add(new PowerPotion());
+        this.shopItems.add(new IntelligencePotion());
+        this.shopItems.add(new GoldenArmor());
+        this.shopItems.add(new MagicCloak());
+        this.shopItems.add(new MagicHat());
     }
 
     /**
      * Create the panel displaying shop items
      */
     private void createShopItemsPanel() {
-        shopItemsPanel = new JPanel(new GridLayout(0, 3, 10, 10));
-        shopItemsPanel.setBackground(new Color(139, 69, 19));
-        shopItemsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.shopItemsPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+        this.shopItemsPanel.setBackground(new Color(139, 69, 19));
+        this.shopItemsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Add each shop item to the panel
-        for (Item item : shopItems) {
-            JPanel itemPanel = createItemPanel(item);
-            shopItemsPanel.add(itemPanel);
+        for (Item item : this.shopItems) {
+            JPanel itemPanel = this.createItemPanel(item);
+            this.shopItemsPanel.add(itemPanel);
         }
 
         // Add the shop items panel to a scroll pane
-        JScrollPane scrollPane = new JScrollPane(shopItemsPanel);
+        JScrollPane scrollPane = new JScrollPane(this.shopItemsPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
     }
 
     /**
@@ -192,9 +192,9 @@ public class ShopPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    buyItem(item);
-                }else if (e.getButton() == MouseEvent.BUTTON3) {
-                    sellItem(item);
+                    ShopPanel.this.buyItem(item);
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    ShopPanel.this.sellItem(item);
                 }
             }
 
@@ -208,7 +208,7 @@ public class ShopPanel extends JPanel {
 
             @Override
             public void mouseExited(MouseEvent e) {
-                JPanel parent = (JPanel) e.getSource();
+                JPanel parent = (JPanel)e.getSource();
                 parent.setBackground(new Color(205, 133, 63));
                 parent.setCursor(Cursor.getDefaultCursor());
                 parent.revalidate();
@@ -225,17 +225,17 @@ public class ShopPanel extends JPanel {
     private void buyItem(Item item) {
         int price = item.getPrize();
 
-        if (player.getCoins() >= price) {
+        if (this.player.getCoins() >= price) {
             // Check if inventory has space
-            if (player.getInventory().getItems().size() < 6) {
+            if (this.player.getInventory().getItems().size() < 6) {
                 // Deduct coins
-                player.setCoins(player.getCoins() - price);
+                this.player.setCoins(this.player.getCoins() - price);
 
                 // Add item to inventory
-                player.getInventory().addItem(item);
+                this.player.getInventory().addItem(item);
 
                 // Update coins display
-                coinsLabel.setText(player.getCoins() + "");
+                this.coinsLabel.setText(this.player.getCoins() + "");
 
                 // Show success message
                 JOptionPane.showMessageDialog(this, 
@@ -261,10 +261,10 @@ public class ShopPanel extends JPanel {
     public void sellItem(Item item) {
         int prize = item.getPrize();
 
-        if (player.getInventory().hasItem(item)) {
-            player.setCoins(player.getCoins() + prize / 2);
-            coinsLabel.setText(player.getCoins() + "");
-            player.getInventory().sellItem(item);
+        if (this.player.getInventory().hasItem(item)) {
+            this.player.setCoins(this.player.getCoins() + prize / 2);
+            this.coinsLabel.setText(this.player.getCoins() + "");
+            this.player.getInventory().sellItem(item);
         } else {
             JOptionPane.showMessageDialog(this,
                     "You do not have this item " + item.getName() + "!",
@@ -282,17 +282,17 @@ public class ShopPanel extends JPanel {
 
         if (parent != null) {
             parent.remove(this);
-            parent.add(parentPanel, BorderLayout.CENTER);
+            parent.add(this.parentPanel, BorderLayout.CENTER);
             parent.revalidate();
             parent.repaint();
 
             // Reset shop open state so it can be reopened
-            if (parentPanel instanceof GamePanel) {
-                ((GamePanel) parentPanel).resetShopOpenState();
+            if (this.parentPanel instanceof GamePanel) {
+                ((GamePanel)this.parentPanel).resetShopOpenState();
             }
 
             // Request focus for the game panel to receive key events
-            parentPanel.requestFocusInWindow();
+            this.parentPanel.requestFocusInWindow();
         }
     }
 }

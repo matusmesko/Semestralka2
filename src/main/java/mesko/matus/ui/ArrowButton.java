@@ -1,7 +1,13 @@
 package mesko.matus.ui;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Custom button with arrow appearance for navigation
@@ -14,36 +20,36 @@ public class ArrowButton extends JButton {
      */
     public ArrowButton(String direction) {
         super();
-        setFocusPainted(false);
-        setBorderPainted(false);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
-        setContentAreaFilled(false);
+        this.setFocusPainted(false);
+        this.setBorderPainted(false);
+        this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        this.setContentAreaFilled(false);
 
         // Load arrow image
         try {
             String imagePath = "/" + direction + ".png";
             ImageIcon arrowIcon = new ImageIcon(ArrowButton.class.getResource(imagePath));
-            setIcon(arrowIcon);
+            this.setIcon(arrowIcon);
             // Make the button size match the image size
-            setPreferredSize(new Dimension(arrowIcon.getIconWidth(), arrowIcon.getIconHeight()));
+            this.setPreferredSize(new Dimension(arrowIcon.getIconWidth(), arrowIcon.getIconHeight()));
         } catch (Exception e) {
             // Fallback to text if image can't be loaded
             System.err.println("Could not load " + direction + " arrow image: " + e.getMessage());
-            setText(direction.equals("left") ? "<" : ">");
-            setFont(new Font("Arial", Font.BOLD, 24));
-            setForeground(Color.WHITE);
-            setBackground(new Color(139, 69, 19)); // Brown color
-            setContentAreaFilled(true);
+            this.setText(direction.equals("left") ? "<" : ">");
+            this.setFont(new Font("Arial", Font.BOLD, 24));
+            this.setForeground(Color.WHITE);
+            this.setBackground(new Color(139, 69, 19)); // Brown color
+            this.setContentAreaFilled(true);
         }
 
         // Add hover effect
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        this.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
                 setForeground(new Color(255, 215, 0)); // Gold color on hover
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                setForeground(Color.WHITE); // Back to original text color
+            public void mouseExited(MouseEvent evt) {
+                ArrowButton.this.setForeground(Color.WHITE); // Back to original text color
             }
         });
     }

@@ -1,5 +1,7 @@
 package mesko.matus.hero;
 
+import mesko.matus.player.Player;
+
 public abstract class Hero {
 
     private String name;
@@ -17,24 +19,24 @@ public abstract class Hero {
     }
 
     public int getLuck() {
-        return luck;
+        return this.luck;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getIntelligence() {
-        return intelligence;
+        return this.intelligence;
     }
 
     public int getHealth() {
-        return health;
+        return this.health;
     }
 
     public int getPower() {
-        return power;
+        return this.power;
     }
 
-    public abstract void useAbility();
+    public abstract void useAbility(Player player);
 }

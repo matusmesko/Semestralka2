@@ -38,15 +38,15 @@ public class InventoryPanel extends JPanel {
         this.player = player;
         this.parentPanel = parentPanel;
 
-        setLayout(new BorderLayout());
-        setBackground(new Color(200, 180, 150));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.setLayout(new BorderLayout());
+        this.setBackground(new Color(200, 180, 150));
+        this.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Title
         JLabel titleLabel = new JLabel("Player Inventory");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        add(titleLabel, BorderLayout.NORTH);
+        this.add(titleLabel, BorderLayout.NORTH);
 
         // Main content panel with 2 rows
         JPanel contentPanel = new JPanel(new GridLayout(2, 1, 0, 20));
@@ -57,20 +57,20 @@ public class InventoryPanel extends JPanel {
         topRow.setOpaque(false);
 
         // Stats panel
-        createStatsPanel();
-        topRow.add(statsPanel);
+        this.createStatsPanel();
+        topRow.add(this.statsPanel);
 
         // Equipped items panel
-        createEquippedItemsPanel();
-        topRow.add(equippedItemsPanel);
+        this.createEquippedItemsPanel();
+        topRow.add(this.equippedItemsPanel);
 
         contentPanel.add(topRow);
 
         // Inventory panel in bottom row
-        createInventoryPanel();
-        contentPanel.add(inventoryPanel);
+        this.createInventoryPanel();
+        contentPanel.add(this.inventoryPanel);
 
-        add(contentPanel, BorderLayout.CENTER);
+        this.add(contentPanel, BorderLayout.CENTER);
 
         // Close button
         JButton closeButton = new WoodenButton("Close Inventory", 300, 50, 15);
@@ -94,49 +94,49 @@ public class InventoryPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
         buttonPanel.add(closeButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
      * Creates the panel displaying player stats
      */
     private void createStatsPanel() {
-        statsPanel = new JPanel();
-        statsPanel.setLayout(new BoxLayout(statsPanel, BoxLayout.Y_AXIS));
-        statsPanel.setBorder(BorderFactory.createTitledBorder("Player Stats"));
-        statsPanel.setOpaque(false);
+        this.statsPanel = new JPanel();
+        this.statsPanel.setLayout(new BoxLayout(this.statsPanel, BoxLayout.Y_AXIS));
+        this.statsPanel.setBorder(BorderFactory.createTitledBorder("Player Stats"));
+        this.statsPanel.setOpaque(false);
 
         // Hero name
-        JLabel nameLabel = new JLabel("Hero: " + player.getHero().getName());
+        JLabel nameLabel = new JLabel("Hero: " + this.player.getHero().getName());
         nameLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        statsPanel.add(nameLabel);
-        statsPanel.add(Box.createVerticalStrut(10));
+        this.statsPanel.add(nameLabel);
+        this.statsPanel.add(Box.createVerticalStrut(10));
 
         // Stats
-        JLabel healthLabel = new JLabel("Health: " + player.getHealth());
-        JLabel powerLabel = new JLabel("Power: " + player.getPower());
-        JLabel intelligenceLabel = new JLabel("Intelligence: " + player.getIntelligence());
-        JLabel luckLabel = new JLabel("Luck: " + player.getLuck());
-        JLabel coinsLabel = new JLabel("Coins: " + player.getCoins());
+        JLabel healthLabel = new JLabel("Health: " + this.player.getHealth());
+        JLabel powerLabel = new JLabel("Power: " + this.player.getPower());
+        JLabel intelligenceLabel = new JLabel("Intelligence: " + this.player.getIntelligence());
+        JLabel luckLabel = new JLabel("Luck: " + this.player.getLuck());
+        JLabel coinsLabel = new JLabel("Coins: " + this.player.getCoins());
 
-        statsPanel.add(healthLabel);
-        statsPanel.add(Box.createVerticalStrut(5));
-        statsPanel.add(powerLabel);
-        statsPanel.add(Box.createVerticalStrut(5));
-        statsPanel.add(intelligenceLabel);
-        statsPanel.add(Box.createVerticalStrut(5));
-        statsPanel.add(luckLabel);
-        statsPanel.add(Box.createVerticalStrut(5));
-        statsPanel.add(coinsLabel);
+        this.statsPanel.add(healthLabel);
+        this.statsPanel.add(Box.createVerticalStrut(5));
+        this.statsPanel.add(powerLabel);
+        this.statsPanel.add(Box.createVerticalStrut(5));
+        this.statsPanel.add(intelligenceLabel);
+        this.statsPanel.add(Box.createVerticalStrut(5));
+        this.statsPanel.add(luckLabel);
+        this.statsPanel.add(Box.createVerticalStrut(5));
+        this.statsPanel.add(coinsLabel);
     }
 
     /**
      * Creates the panel displaying equipped items
      */
     private void createEquippedItemsPanel() {
-        equippedItemsPanel = new JPanel(new GridLayout(3, 1, 0, 10));
-        equippedItemsPanel.setBorder(BorderFactory.createTitledBorder("Equipped Items"));
-        equippedItemsPanel.setOpaque(false);
+        this.equippedItemsPanel = new JPanel(new GridLayout(3, 1, 0, 10));
+        this.equippedItemsPanel.setBorder(BorderFactory.createTitledBorder("Equipped Items"));
+        this.equippedItemsPanel.setOpaque(false);
 
         // Create slots for each wearable item type (HEAD, BODY, LEGS)
         for (WearableItemType type : WearableItemType.values()) {
@@ -145,18 +145,18 @@ public class InventoryPanel extends JPanel {
             slotPanel.setPreferredSize(new Dimension(100, 100));
 
             // Get the equipped item for this slot
-            WearableItem equippedItem = player.getEquippedItem(type);
+            WearableItem equippedItem = this.player.getEquippedItem(type);
 
             if (equippedItem != null) {
                 // Display the equipped item
-                createItemDisplay(slotPanel, equippedItem);
+                this.createItemDisplay(slotPanel, equippedItem);
 
                 // Add click listener to unequip
                 slotPanel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        player.unequipItem(type);
-                        refreshPanels();
+                        InventoryPanel.this.player.unequipItem(type);
+                        InventoryPanel.this.refreshPanels();
                     }
                 });
             } else {
@@ -167,7 +167,7 @@ public class InventoryPanel extends JPanel {
                 slotPanel.add(emptyLabel, BorderLayout.CENTER);
             }
 
-            equippedItemsPanel.add(slotPanel);
+            this.equippedItemsPanel.add(slotPanel);
         }
     }
 
@@ -175,13 +175,13 @@ public class InventoryPanel extends JPanel {
      * Creates the panel displaying player inventory
      */
     private void createInventoryPanel() {
-        inventoryPanel = new JPanel();
-        inventoryPanel.setLayout(new GridLayout(3, 2, 10, 10));
-        inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory Items"));
-        inventoryPanel.setOpaque(false);
+        this.inventoryPanel = new JPanel();
+        this.inventoryPanel.setLayout(new GridLayout(3, 2, 10, 10));
+        this.inventoryPanel.setBorder(BorderFactory.createTitledBorder("Inventory Items"));
+        this.inventoryPanel.setOpaque(false);
 
         // Get player items
-        ArrayList<Item> items = player.getInventory().getItems();
+        ArrayList<Item> items = this.player.getInventory().getItems();
 
         // Create item slots (6 max)
         for (int i = 0; i < 6; i++) {
@@ -192,7 +192,7 @@ public class InventoryPanel extends JPanel {
             if (i < items.size() && items.get(i) != null) {
                 // Display item
                 Item item = items.get(i);
-                createItemDisplay(itemSlot, item);
+                this.createItemDisplay(itemSlot, item);
 
                 // Add click listener for item use/equip
                 itemSlot.addMouseListener(new MouseAdapter() {
@@ -201,17 +201,17 @@ public class InventoryPanel extends JPanel {
 
                         if (e.getButton() == MouseEvent.BUTTON1) {
                             if (item instanceof ConsumableItem consumableItem) {
-                                consumableItem.useItem(player);
-                                player.getInventory().removeItem(consumableItem);
-                                refreshPanels();
+                                consumableItem.useItem(InventoryPanel.this.player);
+                                InventoryPanel.this.player.getInventory().removeItem(consumableItem);
+                                InventoryPanel.this.refreshPanels();
                             } else if (item instanceof WearableItem wearableItem) {
 
-                                player.equipItem(wearableItem);
-                                refreshPanels();
+                                InventoryPanel.this.player.equipItem(wearableItem);
+                                InventoryPanel.this.refreshPanels();
                             }
-                        }else if (e.getButton() == MouseEvent.BUTTON3) {
-                            player.getInventory().removeItem(item);
-                            refreshPanels();
+                        } else if (e.getButton() == MouseEvent.BUTTON3) {
+                            InventoryPanel.this.player.getInventory().removeItem(item);
+                            InventoryPanel.this.refreshPanels();
                         }
 
                     }
@@ -221,7 +221,7 @@ public class InventoryPanel extends JPanel {
                 itemSlot.setBackground(new Color(220, 220, 220));
             }
 
-            inventoryPanel.add(itemSlot);
+            this.inventoryPanel.add(itemSlot);
         }
     }
 
@@ -271,14 +271,14 @@ public class InventoryPanel extends JPanel {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                JPanel parent = (JPanel) e.getSource();
+                JPanel parent = (JPanel)e.getSource();
                 parent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 parent.revalidate();
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                JPanel parent = (JPanel) e.getSource();
+                JPanel parent = (JPanel)e.getSource();
                 parent.setCursor(Cursor.getDefaultCursor());
                 parent.revalidate();
             }
@@ -297,7 +297,7 @@ public class InventoryPanel extends JPanel {
             parent.remove(this);
 
             // Create a new inventory panel
-            InventoryPanel newPanel = new InventoryPanel(player, parentPanel);
+            InventoryPanel newPanel = new InventoryPanel(this.player, this.parentPanel);
 
             // Add the new panel
             parent.add(newPanel, BorderLayout.CENTER);

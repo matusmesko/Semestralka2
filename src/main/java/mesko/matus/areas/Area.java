@@ -1,7 +1,10 @@
 package mesko.matus.areas;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -72,7 +75,6 @@ public class Area {
             this.icon = ImageIO.read(getClass().getResourceAsStream(iconPath));
         } catch (IOException e) {
             System.err.println("Failed to load icon for area: " + name);
-            e.printStackTrace();
         }
     }
 
@@ -82,23 +84,23 @@ public class Area {
      * @param g2d Graphics context to draw on
      */
     public void draw(Graphics2D g2d) {
-        if (icon != null) {
+        if (this.icon != null) {
             // Draw the icon
-            g2d.drawImage(icon, bounds.x, bounds.y, bounds.width, bounds.height, null);
+            g2d.drawImage(this.icon, this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height, null);
         } else {
             // Fall back to drawing a rectangle
-            g2d.setColor(fillColor);
-            g2d.fill(bounds);
-            g2d.setColor(borderColor);
-            g2d.draw(bounds);
-            g2d.setColor(textColor);
+            g2d.setColor(this.fillColor);
+            g2d.fill(this.bounds);
+            g2d.setColor(this.borderColor);
+            g2d.draw(this.bounds);
+            g2d.setColor(this.textColor);
 
             // Center the text in the area
             FontMetrics metrics = g2d.getFontMetrics();
-            int textX = bounds.x + (bounds.width - metrics.stringWidth(name)) / 2;
-            int textY = bounds.y + (bounds.height + metrics.getHeight()) / 2;
+            int textX = this.bounds.x + (this.bounds.width - metrics.stringWidth(this.name)) / 2;
+            int textY = this.bounds.y + (this.bounds.height + metrics.getHeight()) / 2;
 
-            g2d.drawString(name, textX, textY);
+            g2d.drawString(this.name, textX, textY);
         }
     }
 
@@ -109,17 +111,9 @@ public class Area {
      * @return true if the rectangles intersect, false otherwise
      */
     public boolean intersects(Rectangle rect) {
-        return bounds.intersects(rect);
+        return this.bounds.intersects(rect);
     }
 
-    /**
-     * Gets the bounds of this area
-     * 
-     * @return Rectangle representing the bounds
-     */
-    public Rectangle getBounds() {
-        return bounds;
-    }
 
     /**
      * Gets the name of this area
@@ -127,6 +121,6 @@ public class Area {
      * @return Name of the area
      */
     public String getName() {
-        return name;
+        return this.name;
     }
 }

@@ -1,7 +1,8 @@
 package mesko.matus.areas;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import java.awt.Component;
+import java.awt.Rectangle;
 import mesko.matus.gui.GamePanel;
 
 /**
@@ -35,15 +36,14 @@ public class ShopArea extends Area {
      * @return true if the player is inside the area, false otherwise
      */
     public boolean checkPlayerCollision(Rectangle characterBounds) {
-        boolean wasInside = isPlayerInside;
-        isPlayerInside = intersects(characterBounds);
+        boolean wasInside = this.isPlayerInside;
+        this.isPlayerInside = intersects(characterBounds);
 
-        // If player just entered the area and shop isn't open, open it
-        if (isPlayerInside && !wasInside && !isShopOpen) {
-            onPlayerEnter();
+        if (this.isPlayerInside && !wasInside && !this.isShopOpen) {
+            this.onPlayerEnter();
         }
 
-        return isPlayerInside;
+        return this.isPlayerInside;
     }
 
     /**
@@ -51,41 +51,33 @@ public class ShopArea extends Area {
      * Opens the shop dialog
      */
     private void onPlayerEnter() {
-        openShop();
+        this.openShop();
     }
 
     /**
      * Opens the shop panel
      */
     private void openShop() {
-        isShopOpen = true;
+        this.isShopOpen = true;
 
         // Check if parent is a GamePanel and show the shop panel
-        if (parent instanceof GamePanel) {
-            ((GamePanel) parent).showShopPanel();
+        if (this.parent instanceof GamePanel) {
+            ((GamePanel)this.parent).showShopPanel();
         } else {
             // Fallback to message dialog if parent is not a GamePanel
-            JOptionPane.showMessageDialog(parent, 
+            JOptionPane.showMessageDialog(this.parent,
                 "Welcome to the shop!\nItems will be available in future updates.",
                 "Shop", 
                 JOptionPane.INFORMATION_MESSAGE);
-            isShopOpen = false;
+            this.isShopOpen = false;
         }
     }
 
-    /**
-     * Checks if the player is currently inside the shop area
-     * 
-     * @return true if the player is inside, false otherwise
-     */
-    public boolean isPlayerInside() {
-        return isPlayerInside;
-    }
 
     /**
      * Resets the shop open state so it can be reopened
      */
     public void resetShopOpenState() {
-        isShopOpen = false;
+        this.isShopOpen = false;
     }
 }

@@ -21,14 +21,14 @@ public class Player {
     private Set<String> defeatedMonsters;
 
     public Player(Hero hero) {
-        inventory = new PlayerInventory();
+        this.inventory = new PlayerInventory();
         this.hero = hero;
-        health = hero.getHealth() + 100;
-        power = hero.getPower();
-        intelligence = hero.getIntelligence();
-        luck = hero.getLuck() + 20;
-        coins = 200;
-        inventory.addItem(new HealthPotion(100));
+        this.health = hero.getHealth() + 100;
+        this.power = hero.getPower();
+        this.intelligence = hero.getIntelligence();
+        this.luck = hero.getLuck() + 20;
+        this.coins = 200;
+        this.inventory.addItem(new HealthPotion(100));
         this.defeatedMonsters = new HashSet<>();
     }
 
@@ -38,7 +38,7 @@ public class Player {
      * @return true if the monster has been defeated, false otherwise
      */
     public boolean hasDefeatedMonster(String monsterName) {
-        return defeatedMonsters.contains(monsterName);
+        return this.defeatedMonsters.contains(monsterName);
     }
 
     /**
@@ -46,19 +46,19 @@ public class Player {
      * @param monster The monster to mark as defeated
      */
     public void defeatMonster(Monster monster) {
-        defeatedMonsters.add(monster.getName());
+        this.defeatedMonsters.add(monster.getName());
     }
 
     public PlayerInventory getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
 
     public int getHealth() {
-        int totalHealth = health;
+        int totalHealth = this.health;
 
         // Add bonuses from equipped items
-        for (WearableItem item : inventory.getEquippedItems()) {
+        for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalHealth += item.addHealth();
             }
@@ -72,10 +72,10 @@ public class Player {
     }
 
     public int getPower() {
-        int totalPower = power;
+        int totalPower = this.power;
 
         // Add bonuses from equipped items
-        for (WearableItem item : inventory.getEquippedItems()) {
+        for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalPower += item.addPower();
             }
@@ -89,10 +89,10 @@ public class Player {
     }
 
     public int getIntelligence() {
-        int totalIntelligence = intelligence;
+        int totalIntelligence = this.intelligence;
 
         // Add bonuses from equipped items
-        for (WearableItem item : inventory.getEquippedItems()) {
+        for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalIntelligence += item.addIntelligence();
             }
@@ -106,10 +106,10 @@ public class Player {
     }
 
     public int getLuck() {
-        int totalLuck = luck;
+        int totalLuck = this.luck;
 
         // Add bonuses from equipped items
-        for (WearableItem item : inventory.getEquippedItems()) {
+        for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalLuck += item.addLuck();
             }
@@ -123,7 +123,7 @@ public class Player {
     }
 
     public int getCoins() {
-        return coins;
+        return this.coins;
     }
 
     public void setCoins(int coins) {
@@ -131,7 +131,7 @@ public class Player {
     }
 
     public Hero getHero() {
-        return hero;
+        return this.hero;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Player {
      * @return true if the item was equipped, false otherwise
      */
     public boolean equipItem(WearableItem item) {
-        return inventory.equipItem(item);
+        return this.inventory.equipItem(item);
     }
 
     /**
@@ -149,7 +149,7 @@ public class Player {
      * @return The unequipped item, or null if no item was equipped
      */
     public WearableItem unequipItem(WearableItemType type) {
-        return inventory.unequipItem(type);
+        return this.inventory.unequipItem(type);
     }
 
     /**
@@ -158,14 +158,7 @@ public class Player {
      * @return The equipped item, or null if no item is equipped
      */
     public WearableItem getEquippedItem(WearableItemType type) {
-        return inventory.getEquippedItem(type);
+        return this.inventory.getEquippedItem(type);
     }
 
-    /**
-     * Gets all equipped wearable items
-     * @return Array of equipped wearable items (may contain null values)
-     */
-    public WearableItem[] getEquippedItems() {
-        return inventory.getEquippedItems();
-    }
 }

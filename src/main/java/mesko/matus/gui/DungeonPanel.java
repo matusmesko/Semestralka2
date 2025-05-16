@@ -33,29 +33,29 @@ public class DungeonPanel extends JPanel {
         this.monsters = new ArrayList<>();
 
         // Initialize monsters in the order they should be defeated
-        monsters.add(new Zombie());
-        monsters.add(new Skeleton());
-        monsters.add(new Dragon());
+        this.monsters.add(new Zombie());
+        this.monsters.add(new Skeleton());
+        this.monsters.add(new Dragon());
 
         // Set up the panel
-        setLayout(new BorderLayout());
-        setBackground(new Color(50, 50, 50));
+        this.setLayout(new BorderLayout());
+        this.setBackground(new Color(50, 50, 50));
 
         // Create title
         JLabel titleLabel = new JLabel("Dungeon - Choose Your Enemy", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-        add(titleLabel, BorderLayout.NORTH);
+        this.add(titleLabel, BorderLayout.NORTH);
 
         // Create monster selection panel
-        JPanel monsterPanel = new JPanel(new GridLayout(monsters.size(), 1, 10, 10));
+        JPanel monsterPanel = new JPanel(new GridLayout(this.monsters.size(), 1, 10, 10));
         monsterPanel.setOpaque(false);
         monsterPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
         // Add monster buttons
-        for (Monster monster : monsters) {
-            JPanel monsterItemPanel = createMonsterPanel(monster);
+        for (Monster monster : this.monsters) {
+            JPanel monsterItemPanel = this.createMonsterPanel(monster);
             monsterPanel.add(monsterItemPanel);
         }
 
@@ -71,7 +71,7 @@ public class DungeonPanel extends JPanel {
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                returnToGame();
+                DungeonPanel.this.returnToGame();
             }
         });
 
@@ -79,7 +79,7 @@ public class DungeonPanel extends JPanel {
         buttonPanel.setOpaque(false);
         buttonPanel.add(returnButton);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-        add(buttonPanel, BorderLayout.SOUTH);
+        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
@@ -109,7 +109,7 @@ public class DungeonPanel extends JPanel {
         panel.add(infoPanel, BorderLayout.CENTER);
 
         // Check if monster is accessible based on progression
-        boolean isAccessible = canFightMonster(monster);
+        boolean isAccessible = this.canFightMonster(monster);
 
         // Fight button or lock indicator
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -120,7 +120,7 @@ public class DungeonPanel extends JPanel {
             fightButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    startBattle(monster);
+                    DungeonPanel.this.startBattle(monster);
                 }
             });
             buttonPanel.add(fightButton);
@@ -132,7 +132,7 @@ public class DungeonPanel extends JPanel {
             buttonPanel.add(lockedLabel);
 
             // Add explanation of what needs to be defeated first
-            String requiredMonster = getRequiredMonsterName(monster);
+            String requiredMonster = this.getRequiredMonsterName(monster);
             if (requiredMonster != null) {
                 JLabel requirementLabel = new JLabel("Defeat " + requiredMonster + " first", JLabel.CENTER);
                 requirementLabel.setFont(new Font("Arial", Font.ITALIC, 12));
@@ -162,12 +162,12 @@ public class DungeonPanel extends JPanel {
 
         // Skeleton requires Zombie to be defeated
         if (monsterName.equals("Skeleton")) {
-            return player.hasDefeatedMonster("Zombie");
+            return this.player.hasDefeatedMonster("Zombie");
         }
 
         // Dragon requires Skeleton to be defeated
         if (monsterName.equals("Dragon")) {
-            return player.hasDefeatedMonster("Skeleton");
+            return this.player.hasDefeatedMonster("Skeleton");
         }
 
         // Default to accessible for any other monsters
@@ -202,7 +202,7 @@ public class DungeonPanel extends JPanel {
         Container parent = this.getParent();
 
         // Create the battle panel with the player, monster, and this panel as parent
-        BattlePanel battlePanel = new BattlePanel(player, monster, this);
+        BattlePanel battlePanel = new BattlePanel(this.player, monster, this);
 
         // Replace this panel with the battle panel
         if (parent != null) {
@@ -221,17 +221,17 @@ public class DungeonPanel extends JPanel {
 
         if (parent != null) {
             parent.remove(this);
-            parent.add(parentPanel, BorderLayout.CENTER);
+            parent.add(this.parentPanel, BorderLayout.CENTER);
             parent.revalidate();
             parent.repaint();
 
             // Reset dungeon open state so it can be reopened
-            if (parentPanel instanceof GamePanel) {
-                ((GamePanel) parentPanel).resetDungeonOpenState();
+            if (this.parentPanel instanceof GamePanel) {
+                ((GamePanel)this.parentPanel).resetDungeonOpenState();
             }
 
             // Request focus for the game panel to receive key events
-            parentPanel.requestFocusInWindow();
+            this.parentPanel.requestFocusInWindow();
         }
     }
 }

@@ -47,42 +47,42 @@ public class HeroSelectionPanel extends JPanel {
      */
     public HeroSelectionPanel(JPanel parentPanel) {
         this.parentPanel = parentPanel;
-        heroes = new ArrayList<>();
-        heroes.add(new Warrior());
-        heroes.add(new Wizard());
+        this.heroes = new ArrayList<>();
+        this.heroes.add(new Warrior());
+        this.heroes.add(new Wizard());
 
 
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setOpaque(false);
 
-        heroImageLabel = new JLabel(new ImageIcon(getClass().getResource("/warrior.png")));
-        heroImageLabel.setHorizontalAlignment(JLabel.CENTER);
-        imagePanel.add(heroImageLabel, BorderLayout.CENTER);
-        add(imagePanel, BorderLayout.CENTER);
+        this.heroImageLabel = new JLabel(new ImageIcon(getClass().getResource("/warrior.png")));
+        this.heroImageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imagePanel.add(this.heroImageLabel, BorderLayout.CENTER);
+        this.add(imagePanel, BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
         southPanel.setOpaque(false);
 
-        statsPanel = new JPanel();
-        statsPanel.setLayout(new GridLayout(5, 1, 5, 5));
-        statsPanel.setBorder(BorderFactory.createTitledBorder("Hero Stats"));
-        statsPanel.setOpaque(false);
+        this.statsPanel = new JPanel();
+        this.statsPanel.setLayout(new GridLayout(5, 1, 5, 5));
+        this.statsPanel.setBorder(BorderFactory.createTitledBorder("Hero Stats"));
+        this.statsPanel.setOpaque(false);
 
-        nameLabel = new JLabel();
-        healthLabel = new JLabel();
-        strengthLabel = new JLabel();
-        intelligenceLabel = new JLabel();
-        luckLabel = new JLabel();
+        this.nameLabel = new JLabel();
+        this.healthLabel = new JLabel();
+        this.strengthLabel = new JLabel();
+        this.intelligenceLabel = new JLabel();
+        this.luckLabel = new JLabel();
 
-        statsPanel.add(nameLabel);
-        statsPanel.add(healthLabel);
-        statsPanel.add(strengthLabel);
-        statsPanel.add(intelligenceLabel);
-        statsPanel.add(luckLabel);
+        this.statsPanel.add(this.nameLabel);
+        this.statsPanel.add(this.healthLabel);
+        this.statsPanel.add(this.strengthLabel);
+        this.statsPanel.add(this.intelligenceLabel);
+        this.statsPanel.add(this.luckLabel);
 
-        southPanel.add(statsPanel);
+        southPanel.add(this.statsPanel);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
@@ -91,10 +91,10 @@ public class HeroSelectionPanel extends JPanel {
         chooseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                selectedHero = heroes.get(currentHeroIndex);
+                HeroSelectionPanel.this.selectedHero = HeroSelectionPanel.this.heroes.get(HeroSelectionPanel.this.currentHeroIndex);
 
                 // Create a Player instance with the selected hero
-                Player player = new Player(selectedHero);
+                Player player = new Player(HeroSelectionPanel.this.selectedHero);
 
                 // Get the parent container
                 Container parent = HeroSelectionPanel.this.getParent();
@@ -120,7 +120,7 @@ public class HeroSelectionPanel extends JPanel {
         leftArrow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                navigateToPreviousHero();
+                HeroSelectionPanel.this.navigateToPreviousHero();
             }
         });
 
@@ -129,7 +129,7 @@ public class HeroSelectionPanel extends JPanel {
         rightArrow.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                navigateToNextHero();
+                HeroSelectionPanel.this.navigateToNextHero();
             }
         });
 
@@ -137,8 +137,8 @@ public class HeroSelectionPanel extends JPanel {
         buttonPanel.add(rightArrow);
         buttonPanel.add(chooseButton);
         southPanel.add(buttonPanel);
-        add(southPanel, BorderLayout.SOUTH);
-        updateHeroDisplay();
+        this.add(southPanel, BorderLayout.SOUTH);
+        this.updateHeroDisplay();
     }
 
 
@@ -148,19 +148,19 @@ public class HeroSelectionPanel extends JPanel {
      * Updates hero image and statistics
      */
     private void updateHeroDisplay() {
-        Hero currentHero = heroes.get(currentHeroIndex);
-        nameLabel.setText("Name: " + currentHero.getName());
-        healthLabel.setText("Health: " + currentHero.getHealth());
-        strengthLabel.setText("Strength: " + currentHero.getPower());
-        intelligenceLabel.setText("Intelligence: " + currentHero.getIntelligence());
-        luckLabel.setText("Luck: " + currentHero.getLuck());
+        Hero currentHero = this.heroes.get(this.currentHeroIndex);
+        this.nameLabel.setText("Name: " + currentHero.getName());
+        this.healthLabel.setText("Health: " + currentHero.getHealth());
+        this.strengthLabel.setText("Strength: " + currentHero.getPower());
+        this.intelligenceLabel.setText("Intelligence: " + currentHero.getIntelligence());
+        this.luckLabel.setText("Luck: " + currentHero.getLuck());
 
 
         String imageName = currentHero.getName().toLowerCase() + ".png";
         ImageIcon heroIcon = new ImageIcon(getClass().getResource("/" + imageName));
         Image img = heroIcon.getImage();
-        heroImageLabel.setIcon(new ImageIcon(Utils.resizeImage(heroIcon, img, 200, 200)));
-        heroImageLabel.setText("");
+        this.heroImageLabel.setIcon(new ImageIcon(Utils.resizeImage(heroIcon, img, 200, 200)));
+        this.heroImageLabel.setText("");
     }
 
 
@@ -168,16 +168,16 @@ public class HeroSelectionPanel extends JPanel {
      * Navigate to the next hero in the list
      */
     private void navigateToNextHero() {
-        currentHeroIndex = (currentHeroIndex + 1) % heroes.size();
-        updateHeroDisplay();
+        this.currentHeroIndex = (this.currentHeroIndex + 1) % this.heroes.size();
+        this.updateHeroDisplay();
     }
 
     /**
      * Navigate to the previous hero in the list
      */
     private void navigateToPreviousHero() {
-        currentHeroIndex = (currentHeroIndex - 1 + heroes.size()) % heroes.size();
-        updateHeroDisplay();
+        this.currentHeroIndex = (this.currentHeroIndex - 1 + this.heroes.size()) % this.heroes.size();
+        this.updateHeroDisplay();
     }
 
     /**
@@ -185,6 +185,6 @@ public class HeroSelectionPanel extends JPanel {
      * @return Hero the selected hero
      */
     public Hero getSelectedHero() {
-        return selectedHero;
+        return this.selectedHero;
     }
 }

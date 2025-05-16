@@ -17,61 +17,57 @@ public class PlayerInventory {
     private WearableItem[] wearableItems;
 
     public PlayerInventory() {
-        items = new Item[MAX_INVENTORY_SIZE];
-        itemCount = 0;
+        this.items = new Item[MAX_INVENTORY_SIZE];
+        this.itemCount = 0;
 
         // Initialize wearable items array with length 3 (for HEAD, BODY, LEGS)
-        wearableItems = new WearableItem[3];
+        this.wearableItems = new WearableItem[3];
     }
 
     public void addItem(Item item) {
-        if (itemCount < MAX_INVENTORY_SIZE) {
-            items[itemCount] = item;
-            itemCount++;
+        if (this.itemCount < MAX_INVENTORY_SIZE) {
+            this.items[this.itemCount] = item;
+            this.itemCount++;
         }
     }
 
     public void removeItem(Item item) {
-        for (int i = 0; i < itemCount; i++) {
-            if (items[i] == item) {
+        for (int i = 0; i < this.itemCount; i++) {
+            if (this.items[i] == item) {
                 // Shift all items after this one to fill the gap
-                for (int j = i; j < itemCount - 1; j++) {
-                    items[j] = items[j + 1];
+                for (int j = i; j < this.itemCount - 1; j++) {
+                    this.items[j] = this.items[j + 1];
                 }
-                items[itemCount - 1] = null; // Clear the last position
-                itemCount--;
+                this.items[this.itemCount - 1] = null; // Clear the last position
+                this.itemCount--;
                 break;
             }
         }
     }
 
     public void sellItem(Item item) {
-        for (int i = 0; i < itemCount; i++) {
-            if (items[i].getName().equals(item.getName())) {
+        for (int i = 0; i < this.itemCount; i++) {
+            if (this.items[i].getName().equals(item.getName())) {
                 // Shift all items after this one to fill the gap
-                for (int j = i; j < itemCount - 1; j++) {
-                    items[j] = items[j + 1];
+                for (int j = i; j < this.itemCount - 1; j++) {
+                    this.items[j] = this.items[j + 1];
                 }
-                items[itemCount - 1] = null; // Clear the last position
-                itemCount--;
+                this.items[this.itemCount - 1] = null; // Clear the last position
+                this.itemCount--;
                 break;
             }
         }
     }
 
     public Item getItem(int index) {
-        if (index < 0 || index >= itemCount) {
+        if (index < 0 || index >= this.itemCount) {
             return null;
         }
-        return items[index];
+        return this.items[index];
     }
 
     public ArrayList<Item> getItems() {
-        ArrayList<Item> itemList = new ArrayList<>();
-        for (int i = 0; i < itemCount; i++) {
-            itemList.add(items[i]);
-        }
-        return itemList;
+        return new ArrayList<>(Arrays.asList(this.items).subList(0, this.itemCount));
     }
 
     /**
@@ -86,8 +82,8 @@ public class PlayerInventory {
 
         // Check if the item is in the inventory
         boolean foundInInventory = false;
-        for (int i = 0; i < itemCount; i++) {
-            if (items[i] == item) {
+        for (int i = 0; i < this.itemCount; i++) {
+            if (this.items[i] == item) {
                 foundInInventory = true;
                 break;
             }
@@ -98,15 +94,15 @@ public class PlayerInventory {
         }
 
         // If there's already an item in that slot, unequip it first
-        if (wearableItems[slotIndex] != null) {
-            unequipItem(type);
+        if (this.wearableItems[slotIndex] != null) {
+            this.unequipItem(type);
         }
 
         // Remove the item from the inventory
-        removeItem(item);
+        this.removeItem(item);
 
         // Equip the item
-        wearableItems[slotIndex] = item;
+        this.wearableItems[slotIndex] = item;
 
         return true;
     }
@@ -118,15 +114,15 @@ public class PlayerInventory {
      */
     public WearableItem unequipItem(WearableItemType type) {
         int slotIndex = type.ordinal();
-        WearableItem item = wearableItems[slotIndex];
+        WearableItem item = this.wearableItems[slotIndex];
 
         if (item != null) {
             // Remove the item from the equipped slot
-            wearableItems[slotIndex] = null;
+            this.wearableItems[slotIndex] = null;
 
             // Add the item back to the inventory if there's space
-            if (itemCount < MAX_INVENTORY_SIZE) {
-                addItem(item);
+            if (this.itemCount < MAX_INVENTORY_SIZE) {
+                this.addItem(item);
             } else {
                 // If inventory is full, just return the item without adding it back
                 return item;
@@ -142,7 +138,7 @@ public class PlayerInventory {
      * @return The equipped item, or null if no item is equipped
      */
     public WearableItem getEquippedItem(WearableItemType type) {
-        return wearableItems[type.ordinal()];
+        return this.wearableItems[type.ordinal()];
     }
 
     /**
@@ -150,7 +146,7 @@ public class PlayerInventory {
      * @return Array of equipped wearable items (may contain null values)
      */
     public WearableItem[] getEquippedItems() {
-        return wearableItems;
+        return this.wearableItems;
     }
 
 
@@ -158,8 +154,8 @@ public class PlayerInventory {
         if (item == null) {
             return false;
         }
-        for (int i = 0; i < itemCount; i++) {
-            if (items[i].getName().equals(item.getName())) {
+        for (int i = 0; i < this.itemCount; i++) {
+            if (this.items[i].getName().equals(item.getName())) {
                 return true;
             }
         }
