@@ -27,15 +27,13 @@ public class WoodenButton extends JButton {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         try {
-            ImageIcon buttonIcon = new ImageIcon(WoodenButton.class.getResource("/button.png"));
+            ImageIcon buttonIcon = new ImageIcon(getClass().getResource("/button.png"));
             this.setIcon(buttonIcon);
             this.setHorizontalTextPosition(JButton.CENTER);
             this.setVerticalTextPosition(JButton.CENTER);
             this.setPreferredSize(new Dimension(buttonIcon.getIconWidth(), buttonIcon.getIconHeight()));
             this.setContentAreaFilled(false);
         } catch (Exception e) {
-
-            System.err.println("Could not load button image: " + e.getMessage());
             this.setBackground(new Color(139, 69, 19));
             this.setContentAreaFilled(true);
         }
@@ -65,7 +63,7 @@ public class WoodenButton extends JButton {
         this.setPreferredSize(new Dimension(width, height));
 
         try {
-            ImageIcon buttonIcon = new ImageIcon(WoodenButton.class.getResource("/button.png"));
+            ImageIcon buttonIcon = new ImageIcon(getClass().getResource("/button.png"));
             this.setIcon(buttonIcon);
             this.setHorizontalTextPosition(JButton.CENTER);
             this.setVerticalTextPosition(JButton.CENTER);

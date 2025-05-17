@@ -172,20 +172,20 @@ public class Player {
 
     /**
      * Equips a wearable item
+     *
      * @param item The wearable item to equip
-     * @return true if the item was equipped, false otherwise
      */
-    public boolean equipItem(WearableItem item) {
-        return this.inventory.equipItem(item);
+    public void equipItem(WearableItem item) {
+        this.inventory.equipItem(item);
     }
 
     /**
      * Unequips a wearable item of the specified type
+     *
      * @param type The type of wearable item to unequip
-     * @return The unequipped item, or null if no item was equipped
      */
-    public WearableItem unequipItem(WearableItemType type) {
-        return this.inventory.unequipItem(type);
+    public void unequipItem(WearableItemType type) {
+        this.inventory.unequipItem(type);
     }
 
     /**

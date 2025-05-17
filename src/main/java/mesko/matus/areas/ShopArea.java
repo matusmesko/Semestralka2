@@ -63,10 +63,6 @@ public class ShopArea extends Area {
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showShopPanel();
         } else {
-            JOptionPane.showMessageDialog(this.parent,
-                "Welcome to the shop!\nItems will be available in future updates.",
-                "Shop", 
-                JOptionPane.INFORMATION_MESSAGE);
             this.isShopOpen = false;
         }
     }

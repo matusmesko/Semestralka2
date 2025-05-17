@@ -33,8 +33,7 @@ public class Area {
      * @param borderColor Color for the area border
      * @param textColor Color for the area text
      */
-    public Area(int x, int y, int width, int height, String name, 
-                Color fillColor, Color borderColor, Color textColor) {
+    public Area(int x, int y, int width, int height, String name, Color fillColor, Color borderColor, Color textColor) {
         this.bounds = new Rectangle(x, y, width, height);
         this.name = name;
         this.fillColor = fillColor;

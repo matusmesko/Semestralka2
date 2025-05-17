@@ -55,7 +55,6 @@ public class ShopPanel extends JPanel {
         this.player = player;
         this.parentPanel = parentPanel;
 
-
         this.initializeShopItems();
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(139, 69, 19));
@@ -100,15 +99,6 @@ public class ShopPanel extends JPanel {
         headerPanel.add(this.coinsPanel, BorderLayout.WEST);
         this.add(headerPanel, BorderLayout.NORTH);
         this.createShopItemsPanel();
-
-        JPanel infoPanel = new JPanel();
-        infoPanel.setBackground(new Color(101, 67, 33));
-        infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        JLabel infoLabel = new JLabel("Click on an item to buy it", JLabel.CENTER);
-        infoLabel.setForeground(Color.WHITE);
-        infoPanel.add(infoLabel);
-
-        this.add(infoPanel, BorderLayout.SOUTH);
     }
 
 

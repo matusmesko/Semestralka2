@@ -40,41 +40,34 @@ public class DungeonPanel extends JPanel {
         this.parentPanel = parentPanel;
         this.monsters = new ArrayList<>();
 
-        // Initialize monsters in the order they should be defeated
         this.monsters.add(new Zombie());
         this.monsters.add(new Skeleton());
         this.monsters.add(new Dragon());
 
-        // Set up the panel
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(50, 50, 50));
 
-        // Create title
-        JLabel titleLabel = new JLabel("Dungeon - Choose Your Enemy", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("Dungeon", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         this.add(titleLabel, BorderLayout.NORTH);
 
-        // Create monster selection panel
         JPanel monsterPanel = new JPanel(new GridLayout(this.monsters.size(), 1, 10, 10));
         monsterPanel.setOpaque(false);
         monsterPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 
-        // Add monster buttons
         for (Monster monster : this.monsters) {
             JPanel monsterItemPanel = this.createMonsterPanel(monster);
             monsterPanel.add(monsterItemPanel);
         }
 
-        // Add monster panel to a scroll pane
         JScrollPane scrollPane = new JScrollPane(monsterPanel);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, BorderLayout.CENTER);
 
-        // Create return button
         WoodenButton returnButton = new WoodenButton("Return to Game");
         returnButton.addActionListener(new ActionListener() {
             @Override
@@ -121,7 +114,7 @@ public class DungeonPanel extends JPanel {
         buttonPanel.setOpaque(false);
 
         if (isAccessible) {
-            WoodenButton fightButton = new WoodenButton("Fight!");
+            WoodenButton fightButton = new WoodenButton("Fight!", 300, 100, 15);
             fightButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -200,7 +193,6 @@ public class DungeonPanel extends JPanel {
         Container parent = this.getParent();
 
         BattlePanel battlePanel = new BattlePanel(this.player, monster, this);
-
         if (parent != null) {
             parent.remove(this);
             parent.add(battlePanel, BorderLayout.CENTER);
@@ -214,17 +206,14 @@ public class DungeonPanel extends JPanel {
      */
     private void returnToGame() {
         Container parent = this.getParent();
-
         if (parent != null) {
             parent.remove(this);
             parent.add(this.parentPanel, BorderLayout.CENTER);
             parent.revalidate();
             parent.repaint();
-
             if (this.parentPanel instanceof GamePanel) {
                 ((GamePanel)this.parentPanel).resetDungeonOpenState();
             }
-
             this.parentPanel.requestFocusInWindow();
         }
     }

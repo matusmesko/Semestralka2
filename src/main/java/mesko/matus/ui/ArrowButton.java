@@ -28,7 +28,7 @@ public class ArrowButton extends JButton {
 
         try {
             String imagePath = "/" + direction + ".png";
-            ImageIcon arrowIcon = new ImageIcon(ArrowButton.class.getResource(imagePath));
+            ImageIcon arrowIcon = new ImageIcon(getClass().getResource(imagePath));
             this.setIcon(arrowIcon);
             this.setPreferredSize(new Dimension(arrowIcon.getIconWidth(), arrowIcon.getIconHeight()));
         } catch (Exception e) {

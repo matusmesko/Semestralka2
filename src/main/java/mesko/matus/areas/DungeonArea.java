@@ -62,10 +62,6 @@ public class DungeonArea extends Area {
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showDungeonPanel();
         } else {
-            JOptionPane.showMessageDialog(this.parent,
-                "Welcome to the dungeon!\nMonsters await in future updates.", 
-                "Dungeon", 
-                JOptionPane.INFORMATION_MESSAGE);
             this.isDungeonOpen = false;
         }
     }

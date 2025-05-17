@@ -156,7 +156,6 @@ public class GamePanel extends JPanel implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
 
-        // Move character based on arrow key
         switch (key) {
             case KeyEvent.VK_UP:
                 this.characterY = Math.max(this.characterY - this.moveSpeed, this.characterSize / 2);
