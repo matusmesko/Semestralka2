@@ -4,11 +4,33 @@ import mesko.matus.items.Item;
 
 public interface WearableItem extends Item {
 
-    @Override
-    String getName();
+    /**
+     * Gets the power bonus provided by this item
+     * @return Items power bonus
+     */
     int addPower();
+
+    /**
+     * Gets the intelligence bonus provided by this item
+     * @return Items intelligence bonus
+     */
     int addIntelligence();
+
+    /**
+     * Gets the luck bonus provided by this item
+     * @return Items luck bonus
+     */
     int addLuck();
+
+    /**
+     * Gets the health bonus provided by this item
+     * @return Items health bonus
+     */
     int addHealth();
+
+    /**
+     * Identifies the equipment slot this item occupies
+     * @return The type defining where this item can be equipped
+     */
     WearableItemType getWearableItemType();
 }

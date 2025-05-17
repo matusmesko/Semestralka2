@@ -7,8 +7,16 @@ import mesko.matus.monster.impl.Dragon;
 import mesko.matus.player.Player;
 import mesko.matus.ui.WoodenButton;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -92,7 +100,6 @@ public class DungeonPanel extends JPanel {
         panel.setBackground(new Color(70, 70, 70));
         panel.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
 
-        // Monster info
         JPanel infoPanel = new JPanel(new GridLayout(2, 1));
         infoPanel.setOpaque(false);
 
@@ -108,10 +115,8 @@ public class DungeonPanel extends JPanel {
         infoPanel.add(statsLabel);
         panel.add(infoPanel, BorderLayout.CENTER);
 
-        // Check if monster is accessible based on progression
         boolean isAccessible = this.canFightMonster(monster);
 
-        // Fight button or lock indicator
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setOpaque(false);
 
@@ -125,13 +130,11 @@ public class DungeonPanel extends JPanel {
             });
             buttonPanel.add(fightButton);
         } else {
-            // Create a locked indicator
             JLabel lockedLabel = new JLabel("LOCKED", JLabel.CENTER);
             lockedLabel.setFont(new Font("Arial", Font.BOLD, 16));
             lockedLabel.setForeground(Color.RED);
             buttonPanel.add(lockedLabel);
 
-            // Add explanation of what needs to be defeated first
             String requiredMonster = this.getRequiredMonsterName(monster);
             if (requiredMonster != null) {
                 JLabel requirementLabel = new JLabel("Defeat " + requiredMonster + " first", JLabel.CENTER);
@@ -155,22 +158,18 @@ public class DungeonPanel extends JPanel {
     private boolean canFightMonster(Monster monster) {
         String monsterName = monster.getName();
 
-        // Zombie is always accessible
         if (monsterName.equals("Zombie")) {
             return true;
         }
 
-        // Skeleton requires Zombie to be defeated
         if (monsterName.equals("Skeleton")) {
             return this.player.hasDefeatedMonster("Zombie");
         }
 
-        // Dragon requires Skeleton to be defeated
         if (monsterName.equals("Dragon")) {
             return this.player.hasDefeatedMonster("Skeleton");
         }
 
-        // Default to accessible for any other monsters
         return true;
     }
 
@@ -198,13 +197,10 @@ public class DungeonPanel extends JPanel {
      * @param monster The monster to fight
      */
     private void startBattle(Monster monster) {
-        // Get the parent container
         Container parent = this.getParent();
 
-        // Create the battle panel with the player, monster, and this panel as parent
         BattlePanel battlePanel = new BattlePanel(this.player, monster, this);
 
-        // Replace this panel with the battle panel
         if (parent != null) {
             parent.remove(this);
             parent.add(battlePanel, BorderLayout.CENTER);
@@ -225,12 +221,10 @@ public class DungeonPanel extends JPanel {
             parent.revalidate();
             parent.repaint();
 
-            // Reset dungeon open state so it can be reopened
             if (this.parentPanel instanceof GamePanel) {
                 ((GamePanel)this.parentPanel).resetDungeonOpenState();
             }
 
-            // Request focus for the game panel to receive key events
             this.parentPanel.requestFocusInWindow();
         }
     }

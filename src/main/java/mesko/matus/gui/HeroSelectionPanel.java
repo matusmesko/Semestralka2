@@ -1,7 +1,15 @@
 package mesko.matus.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -92,24 +100,15 @@ public class HeroSelectionPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 HeroSelectionPanel.this.selectedHero = HeroSelectionPanel.this.heroes.get(HeroSelectionPanel.this.currentHeroIndex);
-
-                // Create a Player instance with the selected hero
                 Player player = new Player(HeroSelectionPanel.this.selectedHero);
-
-                // Get the parent container
                 Container parent = HeroSelectionPanel.this.getParent();
-
-                // Create the game panel with the player
                 GamePanel gamePanel = new GamePanel(player);
 
-                // Replace this panel with the game panel
                 if (parent != null) {
                     parent.remove(HeroSelectionPanel.this);
                     parent.add(gamePanel, BorderLayout.CENTER);
                     parent.revalidate();
                     parent.repaint();
-
-                    // Request focus for the game panel to receive key events
                     gamePanel.requestFocusInWindow();
                 }
             }

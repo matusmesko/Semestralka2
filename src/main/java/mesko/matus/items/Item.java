@@ -2,6 +2,10 @@ package mesko.matus.items;
 
 public interface Item {
 
+    /**
+     * Gets item name
+     * @return name of the item
+     */
     String getName();
 
     /**
@@ -12,5 +16,9 @@ public interface Item {
         return null;
     }
 
+    /**
+     * Gets items prize in store
+     * @return items prize
+     */
     int getPrize();
 }

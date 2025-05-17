@@ -5,8 +5,9 @@ import mesko.matus.player.Player;
 
 public interface ConsumableItem extends Item {
 
-    @Override
-    String getName();
-
+    /**
+     * Uses the consumable item on the specified player, applying its effects.
+     * @param player The player who is using the item.
+     */
     void useItem(Player player);
 }

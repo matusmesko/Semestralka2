@@ -37,8 +37,6 @@ public class PubArea extends Area {
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = this.isPlayerInside;
         this.isPlayerInside = intersects(characterBounds);
-
-        // If player just entered the area and pub isn't open, open it
         if (this.isPlayerInside && !wasInside && !this.isPubOpen) {
             this.onPlayerEnter();
         }
@@ -59,8 +57,6 @@ public class PubArea extends Area {
      */
     private void openPub() {
         this.isPubOpen = true;
-
-        // Check if parent is a GamePanel and show the pub panel
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showPubPanel();
         } else {

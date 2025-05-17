@@ -38,8 +38,6 @@ public class DungeonArea extends Area {
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = this.isPlayerInside;
         this.isPlayerInside = intersects(characterBounds);
-
-        // If player just entered the area and dungeon isn't open, open it
         if (this.isPlayerInside && !wasInside && !this.isDungeonOpen) {
             this.onPlayerEnter();
         }
@@ -61,11 +59,9 @@ public class DungeonArea extends Area {
     private void openDungeon() {
         this.isDungeonOpen = true;
 
-        // Check if parent is a GamePanel and show the dungeon panel
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showDungeonPanel();
         } else {
-            // Fallback to message dialog if parent is not a GamePanel
             JOptionPane.showMessageDialog(this.parent,
                 "Welcome to the dungeon!\nMonsters await in future updates.", 
                 "Dungeon", 

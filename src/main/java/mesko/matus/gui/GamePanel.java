@@ -1,8 +1,16 @@
 package mesko.matus.gui;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Container;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,13 +18,11 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import mesko.matus.areas.Area;
 import mesko.matus.areas.ShopArea;
 import mesko.matus.areas.DungeonArea;
 import mesko.matus.areas.PubArea;
 import mesko.matus.player.Player;
-import mesko.matus.gui.ShopPanel;
-import mesko.matus.gui.PubPanel;
+
 
 /**
  * Game panel displayed after hero selection
@@ -26,18 +32,15 @@ import mesko.matus.gui.PubPanel;
 public class GamePanel extends JPanel implements KeyListener {
     private Player player;
 
-    // Character position and movement
     private int characterX = 400;
     private int characterY = 300;
     private int characterSize = 100;
     private int moveSpeed = 5;
 
-    // Game areas
     private ShopArea shopArea;
     private DungeonArea dungeonArea;
     private PubArea pubArea;
 
-    // Game area dimensions
     private int gameWidth = 800;
     private int gameHeight = 500;
 
@@ -53,12 +56,10 @@ public class GamePanel extends JPanel implements KeyListener {
         this.setFocusable(true);
         this.addKeyListener(this);
 
-        // Initialize game areas
         this.shopArea = new ShopArea(150, 150, 100, 100, this);
         this.dungeonArea = new DungeonArea(550, 150, 100, 100, this);
         this.pubArea = new PubArea(350, 350, 100, 100, this);
 
-        // Create game area panel (this will be painted in paintComponent)
         JPanel gameAreaPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -70,7 +71,6 @@ public class GamePanel extends JPanel implements KeyListener {
         gameAreaPanel.setOpaque(false);
         add(gameAreaPanel, BorderLayout.CENTER);
 
-        // Timer to ensure smooth animation and continuous collision detection
         Timer gameTimer = new Timer(16, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,10 +79,6 @@ public class GamePanel extends JPanel implements KeyListener {
             }
         });
         gameTimer.start();
-
-
-
-        // Request focus to receive key events
         this.requestFocusInWindow();
     }
 
@@ -111,7 +107,6 @@ public class GamePanel extends JPanel implements KeyListener {
             g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
         }
 
-        // Draw game areas
         this.shopArea.draw(g2d);
         this.dungeonArea.draw(g2d);
         this.pubArea.draw(g2d);
@@ -136,13 +131,12 @@ public class GamePanel extends JPanel implements KeyListener {
      */
     private void checkAreaCollisions() {
         Rectangle characterBounds = new Rectangle(
-                this.characterX - this.characterSize/2,
-                this.characterY - this.characterSize/2,
+                this.characterX - this.characterSize / 2,
+                this.characterY - this.characterSize / 2,
                 this.characterSize,
                 this.characterSize
         );
 
-        // Check for shop, dungeon, and pub collisions
         this.shopArea.checkPlayerCollision(characterBounds);
         this.dungeonArea.checkPlayerCollision(characterBounds);
         this.pubArea.checkPlayerCollision(characterBounds);
@@ -153,7 +147,6 @@ public class GamePanel extends JPanel implements KeyListener {
      */
     @Override
     public void keyTyped(KeyEvent e) {
-        // Not used
     }
 
     /**
@@ -166,27 +159,23 @@ public class GamePanel extends JPanel implements KeyListener {
         // Move character based on arrow key
         switch (key) {
             case KeyEvent.VK_UP:
-                this.characterY = Math.max(this.characterY - this.moveSpeed, this.characterSize/2);
+                this.characterY = Math.max(this.characterY - this.moveSpeed, this.characterSize / 2);
                 break;
             case KeyEvent.VK_DOWN:
-                this.characterY = Math.min(this.characterY + this.moveSpeed, this.gameHeight - this.characterSize/2);
+                this.characterY = Math.min(this.characterY + this.moveSpeed, this.gameHeight - this.characterSize / 2);
                 break;
             case KeyEvent.VK_LEFT:
-                this.characterX = Math.max(this.characterX - this.moveSpeed, this.characterSize/2);
+                this.characterX = Math.max(this.characterX - this.moveSpeed, this.characterSize / 2);
                 break;
             case KeyEvent.VK_RIGHT:
-                this.characterX = Math.min(this.characterX + this.moveSpeed, this.gameWidth - this.characterSize/2);
+                this.characterX = Math.min(this.characterX + this.moveSpeed, this.gameWidth - this.characterSize / 2);
                 break;
             case KeyEvent.VK_I:
-                // Show inventory panel when 'I' is pressed
                 this.showInventoryPanel();
-                return; // Return early to avoid collision check and repaint
+                return;
         }
 
-        // Check for collisions with game areas
         this.checkAreaCollisions();
-
-        // Repaint the game area
         this.repaint();
     }
 
@@ -201,13 +190,8 @@ public class GamePanel extends JPanel implements KeyListener {
      * Show the inventory panel with player stats and items
      */
     private void showInventoryPanel() {
-        // Get the parent container
         Container parent = this.getParent();
-
-        // Create the inventory panel with the player and this panel as parent
         InventoryPanel inventoryPanel = new InventoryPanel(this.player, this);
-
-        // Replace this panel with the inventory panel
         if (parent != null) {
             parent.remove(this);
             parent.add(inventoryPanel, BorderLayout.CENTER);
@@ -220,13 +204,8 @@ public class GamePanel extends JPanel implements KeyListener {
      * Show the shop panel with items for sale
      */
     public void showShopPanel() {
-        // Get the parent container
         Container parent = this.getParent();
-
-        // Create the shop panel with the player and this panel as parent
         ShopPanel shopPanel = new ShopPanel(this.player, this);
-
-        // Replace this panel with the shop panel
         if (parent != null) {
             parent.remove(this);
             parent.add(shopPanel, BorderLayout.CENTER);
@@ -260,13 +239,9 @@ public class GamePanel extends JPanel implements KeyListener {
      * Show the dungeon panel with monsters to fight
      */
     public void showDungeonPanel() {
-        // Get the parent container
         Container parent = this.getParent();
-
-        // Create the dungeon panel with the player and this panel as parent
         DungeonPanel dungeonPanel = new DungeonPanel(this.player, this);
 
-        // Replace this panel with the dungeon panel
         if (parent != null) {
             parent.remove(this);
             parent.add(dungeonPanel, BorderLayout.CENTER);
@@ -279,13 +254,8 @@ public class GamePanel extends JPanel implements KeyListener {
      * Show the pub panel with the cup game
      */
     public void showPubPanel() {
-        // Get the parent container
         Container parent = this.getParent();
-
-        // Create the pub panel with the player and this panel as parent
         PubPanel pubPanel = new PubPanel(this.player, this);
-
-        // Replace this panel with the pub panel
         if (parent != null) {
             parent.remove(this);
             parent.add(pubPanel, BorderLayout.CENTER);

@@ -12,18 +12,22 @@ public class PlayerInventory {
     private static final int MAX_INVENTORY_SIZE = 6;
     private Item[] items;
     private int itemCount;
-
-    // Array to store equipped wearable items (HEAD, BODY, LEGS)
     private WearableItem[] wearableItems;
 
+    /**
+     * Constructs a new PlayerInventory with default settings.
+     * Initializes the inventory to hold up to 6 items and 3 wearable slots.
+     */
     public PlayerInventory() {
         this.items = new Item[MAX_INVENTORY_SIZE];
         this.itemCount = 0;
-
-        // Initialize wearable items array with length 3 (for HEAD, BODY, LEGS)
         this.wearableItems = new WearableItem[3];
     }
 
+    /**
+     * Adds an item to the inventory if there is space available.
+     * @param item The item to be added to the inventory.
+     */
     public void addItem(Item item) {
         if (this.itemCount < MAX_INVENTORY_SIZE) {
             this.items[this.itemCount] = item;
@@ -31,24 +35,30 @@ public class PlayerInventory {
         }
     }
 
+    /**
+     * Removes the specified item from the inventory.
+     * @param item The item to be removed.
+     */
     public void removeItem(Item item) {
         for (int i = 0; i < this.itemCount; i++) {
             if (this.items[i] == item) {
-                // Shift all items after this one to fill the gap
                 for (int j = i; j < this.itemCount - 1; j++) {
                     this.items[j] = this.items[j + 1];
                 }
-                this.items[this.itemCount - 1] = null; // Clear the last position
+                this.items[this.itemCount - 1] = null;
                 this.itemCount--;
                 break;
             }
         }
     }
 
+    /**
+     * Sells an item from the inventory, removing it without adding it back.
+     * @param item The item to be sold.
+     */
     public void sellItem(Item item) {
         for (int i = 0; i < this.itemCount; i++) {
             if (this.items[i].getName().equals(item.getName())) {
-                // Shift all items after this one to fill the gap
                 for (int j = i; j < this.itemCount - 1; j++) {
                     this.items[j] = this.items[j + 1];
                 }
@@ -59,6 +69,11 @@ public class PlayerInventory {
         }
     }
 
+    /**
+     * Retrieves an item from the inventory at the specified index.
+     * @param index The index of the item to retrieve.
+     * @return The item at the specified index, or null if the index is out of bounds.
+     */
     public Item getItem(int index) {
         if (index < 0 || index >= this.itemCount) {
             return null;
@@ -76,11 +91,8 @@ public class PlayerInventory {
      * @return true if the item was equipped, false otherwise
      */
     public boolean equipItem(WearableItem item) {
-        // Get the type of the wearable item
         WearableItemType type = item.getWearableItemType();
         int slotIndex = type.ordinal();
-
-        // Check if the item is in the inventory
         boolean foundInInventory = false;
         for (int i = 0; i < this.itemCount; i++) {
             if (this.items[i] == item) {
@@ -88,22 +100,14 @@ public class PlayerInventory {
                 break;
             }
         }
-
         if (!foundInInventory) {
             return false;
         }
-
-        // If there's already an item in that slot, unequip it first
         if (this.wearableItems[slotIndex] != null) {
             this.unequipItem(type);
         }
-
-        // Remove the item from the inventory
         this.removeItem(item);
-
-        // Equip the item
         this.wearableItems[slotIndex] = item;
-
         return true;
     }
 
@@ -115,20 +119,14 @@ public class PlayerInventory {
     public WearableItem unequipItem(WearableItemType type) {
         int slotIndex = type.ordinal();
         WearableItem item = this.wearableItems[slotIndex];
-
         if (item != null) {
-            // Remove the item from the equipped slot
             this.wearableItems[slotIndex] = null;
-
-            // Add the item back to the inventory if there's space
             if (this.itemCount < MAX_INVENTORY_SIZE) {
                 this.addItem(item);
             } else {
-                // If inventory is full, just return the item without adding it back
                 return item;
             }
         }
-
         return item;
     }
 
@@ -150,6 +148,11 @@ public class PlayerInventory {
     }
 
 
+    /**
+     * Checks if the inventory contains the specified item.
+     * @param item The item to check for.
+     * @return true if the item is present in the inventory, false otherwise.
+     */
     public boolean hasItem(Item item) {
         if (item == null) {
             return false;

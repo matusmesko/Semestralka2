@@ -52,10 +52,7 @@ public class Area {
      * @param name Name of the area (displayed as text)
      */
     public Area(int x, int y, int width, int height, String name) {
-        this(x, y, width, height, name, 
-             new Color(150, 100, 50), // Default fill color
-             Color.BLACK,             // Default border color
-             Color.WHITE);            // Default text color
+        this(x, y, width, height, name, new Color(150, 100, 50), Color.BLACK, Color.WHITE);
     }
 
     /**
@@ -85,17 +82,14 @@ public class Area {
      */
     public void draw(Graphics2D g2d) {
         if (this.icon != null) {
-            // Draw the icon
             g2d.drawImage(this.icon, this.bounds.x, this.bounds.y, this.bounds.width, this.bounds.height, null);
         } else {
-            // Fall back to drawing a rectangle
             g2d.setColor(this.fillColor);
             g2d.fill(this.bounds);
             g2d.setColor(this.borderColor);
             g2d.draw(this.bounds);
             g2d.setColor(this.textColor);
 
-            // Center the text in the area
             FontMetrics metrics = g2d.getFontMetrics();
             int textX = this.bounds.x + (this.bounds.width - metrics.stringWidth(this.name)) / 2;
             int textY = this.bounds.y + (this.bounds.height + metrics.getHeight()) / 2;

@@ -60,11 +60,9 @@ public class ShopArea extends Area {
     private void openShop() {
         this.isShopOpen = true;
 
-        // Check if parent is a GamePanel and show the shop panel
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showShopPanel();
         } else {
-            // Fallback to message dialog if parent is not a GamePanel
             JOptionPane.showMessageDialog(this.parent,
                 "Welcome to the shop!\nItems will be available in future updates.",
                 "Shop", 

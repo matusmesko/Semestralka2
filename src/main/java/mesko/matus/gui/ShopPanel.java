@@ -10,8 +10,21 @@ import mesko.matus.items.wearable.impl.MagicHat;
 import mesko.matus.player.Player;
 import mesko.matus.ui.WoodenButton;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,8 +33,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Shop panel displayed when player enters the shop area
@@ -33,8 +44,6 @@ public class ShopPanel extends JPanel {
     private JLabel coinsLabel;
     private JPanel shopItemsPanel;
     private JPanel coinsPanel;
-
-    // List of items available in the shop
     private ArrayList<Item> shopItems;
 
     /**
@@ -47,26 +56,20 @@ public class ShopPanel extends JPanel {
         this.parentPanel = parentPanel;
 
 
-        // Initialize shop items
         this.initializeShopItems();
-
-        // Set up the panel
         this.setLayout(new BorderLayout());
-        this.setBackground(new Color(139, 69, 19)); // Brown background for shop
+        this.setBackground(new Color(139, 69, 19));
 
-        // Create header panel with title and back button
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(new Color(101, 67, 33)); // Darker brown for header
+        headerPanel.setBackground(new Color(101, 67, 33));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Add shop title
         JLabel titleLabel = new JLabel("Shop", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(Color.WHITE);
         headerPanel.add(titleLabel, BorderLayout.CENTER);
 
-        // Add back button
-        JButton backButton = new WoodenButton("Back to game", 150,30,15);
+        JButton backButton = new WoodenButton("Back to game", 150, 30, 15);
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,11 +78,9 @@ public class ShopPanel extends JPanel {
         });
         headerPanel.add(backButton, BorderLayout.EAST);
 
-        // Add coins display with coin image
         this.coinsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         this.coinsPanel.setOpaque(false);
 
-        // Load coin image
         try {
             BufferedImage coinImage = ImageIO.read(getClass().getResourceAsStream("/coin.png"));
             if (coinImage != null) {
@@ -91,20 +92,15 @@ public class ShopPanel extends JPanel {
             System.err.println("Failed to load coin image");
         }
 
-        // Add coins text
         this.coinsLabel = new JLabel(player.getCoins() + "", JLabel.LEFT);
         this.coinsLabel.setFont(new Font("Arial", Font.BOLD, 16));
         this.coinsLabel.setForeground(Color.YELLOW);
         this.coinsPanel.add(this.coinsLabel);
 
         headerPanel.add(this.coinsPanel, BorderLayout.WEST);
-
         this.add(headerPanel, BorderLayout.NORTH);
-
-        // Create shop items panel
         this.createShopItemsPanel();
 
-        // Create info panel
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(new Color(101, 67, 33));
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -137,13 +133,11 @@ public class ShopPanel extends JPanel {
         this.shopItemsPanel.setBackground(new Color(139, 69, 19));
         this.shopItemsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Add each shop item to the panel
         for (Item item : this.shopItems) {
             JPanel itemPanel = this.createItemPanel(item);
             this.shopItemsPanel.add(itemPanel);
         }
 
-        // Add the shop items panel to a scroll pane
         JScrollPane scrollPane = new JScrollPane(this.shopItemsPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -226,32 +220,23 @@ public class ShopPanel extends JPanel {
         int price = item.getPrize();
 
         if (this.player.getCoins() >= price) {
-            // Check if inventory has space
             if (this.player.getInventory().getItems().size() < 6) {
-                // Deduct coins
                 this.player.setCoins(this.player.getCoins() - price);
-
-                // Add item to inventory
                 this.player.getInventory().addItem(item);
-
-                // Update coins display
                 this.coinsLabel.setText(this.player.getCoins() + "");
 
-                // Show success message
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "You bought " + item.getName() + " for " + price + " coins!",
                     "Purchase Successful", 
                     JOptionPane.INFORMATION_MESSAGE);
             } else {
-                // Show inventory full message
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                     "Your inventory is full! You cannot buy more items.",
                     "Inventory Full", 
                     JOptionPane.WARNING_MESSAGE);
             }
         } else {
-            // Show not enough coins message
-            JOptionPane.showMessageDialog(this, 
+            JOptionPane.showMessageDialog(this,
                 "You don't have enough coins to buy " + item.getName() + "!",
                 "Not Enough Coins", 
                 JOptionPane.WARNING_MESSAGE);
@@ -279,19 +264,14 @@ public class ShopPanel extends JPanel {
      */
     private void returnToGame() {
         Container parent = this.getParent();
-
         if (parent != null) {
             parent.remove(this);
             parent.add(this.parentPanel, BorderLayout.CENTER);
             parent.revalidate();
             parent.repaint();
-
-            // Reset shop open state so it can be reopened
             if (this.parentPanel instanceof GamePanel) {
                 ((GamePanel)this.parentPanel).resetShopOpenState();
             }
-
-            // Request focus for the game panel to receive key events
             this.parentPanel.requestFocusInWindow();
         }
     }

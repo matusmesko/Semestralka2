@@ -49,49 +49,64 @@ public class Player {
         this.defeatedMonsters.add(monster.getName());
     }
 
+    /**
+     * Return instance of players inventory
+     * @return player inventory
+     */
     public PlayerInventory getInventory() {
         return this.inventory;
     }
 
-
+    /**
+     * Returns players health with all items bonuses
+     * @return players health
+     */
     public int getHealth() {
         int totalHealth = this.health;
-
-        // Add bonuses from equipped items
         for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalHealth += item.addHealth();
             }
         }
-
         return totalHealth;
     }
 
+    /**
+     * Set player health
+     * @param health player health
+     */
     public void setHealth(int health) {
         this.health = health;
     }
 
+    /**
+     * Returns players power with all items bonuses
+     * @return players power
+     */
     public int getPower() {
         int totalPower = this.power;
-
-        // Add bonuses from equipped items
         for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalPower += item.addPower();
             }
         }
-
         return totalPower;
     }
 
+    /**
+     * Set player power
+     * @param power players power
+     */
     public void setPower(int power) {
         this.power = power;
     }
 
+    /**
+     * Returns players intelligence with all items bonuses
+     * @return players intelligence
+     */
     public int getIntelligence() {
         int totalIntelligence = this.intelligence;
-
-        // Add bonuses from equipped items
         for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalIntelligence += item.addIntelligence();
@@ -101,35 +116,56 @@ public class Player {
         return totalIntelligence;
     }
 
+    /**
+     * Set player intelligence
+     * @param intelligence player intelligence
+     */
     public void setIntelligence(int intelligence) {
         this.intelligence = intelligence;
     }
 
+    /**
+     * Returns players luck with all items bonuses
+     * @return players luck
+     */
     public int getLuck() {
         int totalLuck = this.luck;
-
-        // Add bonuses from equipped items
         for (WearableItem item : this.inventory.getEquippedItems()) {
             if (item != null) {
                 totalLuck += item.addLuck();
             }
         }
-
         return totalLuck;
     }
 
+    /**
+     * Set player luck
+     * @param luck players luck
+     */
     public void setLuck(int luck) {
         this.luck = luck;
     }
 
+    /**
+     * Get players coins
+     * @return players coins
+     */
     public int getCoins() {
         return this.coins;
     }
 
+    /**
+     * Set players coins
+     * @param coins players coins
+     */
     public void setCoins(int coins) {
         this.coins = coins;
     }
 
+    /**
+     * Get players selected hero
+     * @return players hero
+     */
     public Hero getHero() {
         return this.hero;
     }
