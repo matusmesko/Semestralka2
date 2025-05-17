@@ -87,8 +87,7 @@ public class ShopPanel extends JPanel {
                 JLabel coinImageLabel = new JLabel(new ImageIcon(scaledCoin));
                 this.coinsPanel.add(coinImageLabel);
             }
-        } catch (IOException e) {
-            System.err.println("Failed to load coin image");
+        } catch (IOException ignored) {
         }
 
         this.coinsLabel = new JLabel(player.getCoins() + "", JLabel.LEFT);
@@ -144,10 +143,12 @@ public class ShopPanel extends JPanel {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(new Color(205, 133, 63));
         panel.setBorder(BorderFactory.createLineBorder(new Color(101, 67, 33), 2));
+
         JLabel nameLabel = new JLabel(item.getName(), JLabel.CENTER);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 14));
         nameLabel.setForeground(Color.WHITE);
         panel.add(nameLabel, BorderLayout.NORTH);
+
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(JLabel.CENTER);
 
@@ -168,6 +169,7 @@ public class ShopPanel extends JPanel {
 
         panel.add(imageLabel, BorderLayout.CENTER);
         int price = item.getPrize();
+
         JLabel priceLabel = new JLabel("Price: " + price + " coins", JLabel.CENTER);
         priceLabel.setForeground(Color.YELLOW);
         panel.add(priceLabel, BorderLayout.SOUTH);
@@ -234,12 +236,16 @@ public class ShopPanel extends JPanel {
     }
 
     public void sellItem(Item item) {
-        int prize = item.getPrize();
+        int price = item.getPrize() / 2;
 
         if (this.player.getInventory().hasItem(item)) {
-            this.player.setCoins(this.player.getCoins() + prize / 2);
+            this.player.setCoins(this.player.getCoins() + price);
             this.coinsLabel.setText(this.player.getCoins() + "");
             this.player.getInventory().sellItem(item);
+            JOptionPane.showMessageDialog(this,
+                    "You sold " + item.getName() + " for " + price + " coins!",
+                    "Item Sold",
+                    JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this,
                     "You do not have this item " + item.getName() + "!",

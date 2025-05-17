@@ -13,11 +13,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 /**
@@ -37,9 +34,11 @@ public class PubPanel extends JPanel {
     private int currentBet = 0;
 
     /**
-     * Creates a new pub panel with the player and parent panel
-     * @param player The player
-     * @param parentPanel The parent panel to return to
+     * Constructs a new PubPanel instance with the specified player and parent panel.
+     * Initializes the GUI components and layout for the cup game.
+     *
+     * @param player      The player object managing the game state and coins.
+     * @param parentPanel The parent panel to return to when exiting the pub game.
      */
     public PubPanel(Player player, JPanel parentPanel) {
         this.player = player;
@@ -47,86 +46,85 @@ public class PubPanel extends JPanel {
 
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(100, 70, 30));
+        this.setPreferredSize(new Dimension(800, 700));
 
-        JLabel titleLabel = new JLabel("Pub - Cup Game", JLabel.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        this.add(titleLabel, BorderLayout.NORTH);
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setBackground(new Color(70, 40, 10));
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JLabel titleLabel = new JLabel("Pub", JLabel.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titleLabel.setForeground(new Color(255, 215, 0));
+        titlePanel.add(titleLabel, BorderLayout.WEST);
+
+        WoodenButton returnButton = new WoodenButton("Return to Game");
+        returnButton.setFont(new Font("Arial", Font.BOLD, 18));
+        returnButton.setPreferredSize(new Dimension(200, 50));
+        returnButton.addActionListener(e -> PubPanel.this.returnToGame());
+        titlePanel.add(returnButton, BorderLayout.EAST);
+
+        this.add(titlePanel, BorderLayout.NORTH);
 
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setOpaque(false);
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        JPanel gameInfoPanel = new JPanel(new BorderLayout(5, 5));
-        gameInfoPanel.setOpaque(false);
-
-        JPanel playerInfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setOpaque(false);
+        playerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         this.playerCoinsLabel = new JLabel("Your coins: " + player.getCoins(), JLabel.CENTER);
-        this.playerCoinsLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        this.playerCoinsLabel.setFont(new Font("Arial", Font.BOLD, 24));
         this.playerCoinsLabel.setForeground(Color.YELLOW);
         playerInfoPanel.add(this.playerCoinsLabel);
+        contentPanel.add(playerInfoPanel, BorderLayout.NORTH);
 
-        gameInfoPanel.add(playerInfoPanel, BorderLayout.NORTH);
+        JPanel gameAreaPanel = new JPanel(new BorderLayout(0, 20));
+        gameAreaPanel.setOpaque(false);
 
         this.resultLabel = new JLabel("Place a bet to start the game!", JLabel.CENTER);
-        this.resultLabel.setFont(new Font("Arial", Font.ITALIC, 14));
+        this.resultLabel.setFont(new Font("Arial", Font.ITALIC, 20));
         this.resultLabel.setForeground(Color.WHITE);
-        gameInfoPanel.add(this.resultLabel, BorderLayout.CENTER);
+        gameAreaPanel.add(this.resultLabel, BorderLayout.NORTH);
 
-        contentPanel.add(gameInfoPanel, BorderLayout.NORTH);
+        this.cupsPanel = new JPanel(new GridLayout(1, 3, 30, 0));
+        this.cupsPanel.setOpaque(false);
+        this.cupsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+        this.updateCupsPanel(false);
+        gameAreaPanel.add(this.cupsPanel, BorderLayout.CENTER);
 
-        JPanel bettingPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        contentPanel.add(gameAreaPanel, BorderLayout.CENTER);
+
+        JPanel bettingPanel = new JPanel();
         bettingPanel.setOpaque(false);
+        bettingPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         JLabel betLabel = new JLabel("Your bet: ");
+        betLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         betLabel.setForeground(Color.WHITE);
         bettingPanel.add(betLabel);
 
-        this.betAmountField = new JTextField(4);
-        this.betAmountField.setText("10"); // Default bet
+        this.betAmountField = new JTextField(6);
+        this.betAmountField.setFont(new Font("Arial", Font.PLAIN, 18));
+        this.betAmountField.setText("10");
+        this.betAmountField.setHorizontalAlignment(JTextField.CENTER);
         bettingPanel.add(this.betAmountField);
 
         WoodenButton placeBetButton = new WoodenButton("Place Bet");
-        placeBetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PubPanel.this.placeBet();
-            }
-        });
+        placeBetButton.setFont(new Font("Arial", Font.BOLD, 16));
+        placeBetButton.setPreferredSize(new Dimension(150, 40));
+        placeBetButton.addActionListener(e -> PubPanel.this.placeBet());
         bettingPanel.add(placeBetButton);
 
-        contentPanel.add(bettingPanel, BorderLayout.CENTER);
-
-        this.cupsPanel = new JPanel(new GridLayout(1, 3, 10, 0));
-        this.cupsPanel.setOpaque(false);
-        this.cupsPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-
-        this.updateCupsPanel(false);
-
-        contentPanel.add(this.cupsPanel, BorderLayout.SOUTH);
+        contentPanel.add(bettingPanel, BorderLayout.SOUTH);
 
         this.add(contentPanel, BorderLayout.CENTER);
-
-        WoodenButton returnButton = new WoodenButton("Return to Game");
-        returnButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PubPanel.this.returnToGame();
-            }
-        });
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(returnButton);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
-        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
-     * Places a bet and starts the game
+     * Handles the placement of a bet by the player.
+     * Validates the bet amount, checks if the player has sufficient coins,
+     * and initializes the game by randomly placing the dice under one of the cups.
      */
     private void placeBet() {
         try {
@@ -151,9 +149,10 @@ public class PubPanel extends JPanel {
             this.currentBet = betAmount;
             this.gameInProgress = true;
             Random random = new Random();
-            this.diceUnderCup = random.nextInt(3); // 0, 1, or 2
+            this.diceUnderCup = random.nextInt(3);
             this.updateCupsPanel(true);
             this.resultLabel.setText("Select a cup to guess where the dice is!");
+            this.resultLabel.setForeground(Color.WHITE);
             this.betAmountField.setEnabled(false);
 
         } catch (NumberFormatException e) {
@@ -165,34 +164,33 @@ public class PubPanel extends JPanel {
     }
 
     /**
-     * Updates the cups panel with either selectable or non-selectable cups
-     * @param selectable Whether the cups should be selectable
+     * Updates the display of the cups panel.
+     * If the game is in progress, the cups are made selectable by the player.
+     * Otherwise, the cups are displayed in a default state.
+     *
+     * @param selectable True if the cups should be clickable, false otherwise.
      */
     private void updateCupsPanel(boolean selectable) {
         this.cupsPanel.removeAll();
 
         for (int i = 0; i < 3; i++) {
             final int cupIndex = i;
-            JPanel cupPanel = new JPanel(new BorderLayout());
+            JPanel cupPanel = new JPanel(new BorderLayout(0, 10));
             cupPanel.setOpaque(false);
 
             JLabel cupLabel = new JLabel("Cup " + (i + 1), JLabel.CENTER);
+            cupLabel.setFont(new Font("Arial", Font.BOLD, 20));
             cupLabel.setForeground(Color.WHITE);
             cupPanel.add(cupLabel, BorderLayout.NORTH);
 
             JButton cupButton = new JButton();
-            cupButton.setMinimumSize(new Dimension(60, 80));
-            cupButton.setMaximumSize(new Dimension(80, 100));
+            cupButton.setPreferredSize(new Dimension(180, 250));
             cupButton.setBackground(new Color(150, 100, 50));
             cupButton.setBorder(BorderFactory.createRaisedBevelBorder());
+            cupButton.setFont(new Font("Arial", Font.BOLD, 18));
 
             if (selectable) {
-                cupButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        PubPanel.this.selectCup(cupIndex);
-                    }
-                });
+                cupButton.addActionListener(e -> PubPanel.this.selectCup(cupIndex));
                 cupButton.setEnabled(true);
             } else {
                 cupButton.setEnabled(false);
@@ -207,8 +205,11 @@ public class PubPanel extends JPanel {
     }
 
     /**
-     * Handles the selection of a cup
-     * @param cupIndex The index of the selected cup (0, 1, or 2)
+     * Handles the player's selection of a cup.
+     * Checks if the selected cup contains the dice, updates the player's coins,
+     * displays the result, and reveals the position of the dice.
+     *
+     * @param cupIndex The index of the selected cup (0-based).
      */
     private void selectCup(int cupIndex) {
         if (!this.gameInProgress) {
@@ -219,11 +220,11 @@ public class PubPanel extends JPanel {
 
         if (won) {
             this.player.setCoins(this.player.getCoins() + this.currentBet);
-            this.resultLabel.setText("You won! The dice was under Cup " + (this.diceUnderCup + 1) + "!");
+            this.resultLabel.setText("You won " + this.currentBet + " coins! The dice was under Cup " + (this.diceUnderCup + 1) + "!");
             this.resultLabel.setForeground(Color.GREEN);
         } else {
             this.player.setCoins(this.player.getCoins() - this.currentBet);
-            this.resultLabel.setText("You lost! The dice was under Cup " + (this.diceUnderCup + 1) + ".");
+            this.resultLabel.setText("You lost " + this.currentBet + " coins! The dice was under Cup " + (this.diceUnderCup + 1) + ".");
             this.resultLabel.setForeground(Color.RED);
         }
 
@@ -235,57 +236,43 @@ public class PubPanel extends JPanel {
     }
 
     /**
-     * Reveals all cups, showing which one had the dice
+     * Reveals the position of the dice under the cups after the game ends.
+     * Updates the cups panel to show which cup contained the dice.
      */
     private void revealCups() {
         this.cupsPanel.removeAll();
 
         for (int i = 0; i < 3; i++) {
-            JPanel cupPanel = new JPanel(new BorderLayout());
+            JPanel cupPanel = new JPanel(new BorderLayout(0, 10));
             cupPanel.setOpaque(false);
 
             JLabel cupLabel = new JLabel("Cup " + (i + 1), JLabel.CENTER);
+            cupLabel.setFont(new Font("Arial", Font.BOLD, 20));
             cupLabel.setForeground(Color.WHITE);
             cupPanel.add(cupLabel, BorderLayout.NORTH);
 
             JButton cupButton = new JButton();
-            cupButton.setMinimumSize(new Dimension(60, 80));
-            cupButton.setMaximumSize(new Dimension(80, 100));
+            cupButton.setPreferredSize(new Dimension(180, 250));
             cupButton.setBackground(new Color(150, 100, 50));
-            cupButton.setBorder(BorderFactory.createRaisedBevelBorder());
             cupButton.setEnabled(false);
+            cupButton.setFont(new Font("Arial", Font.BOLD, 24));
 
             if (i == this.diceUnderCup) {
                 cupButton.setText("DICE");
-                cupButton.setFont(new Font("Arial", Font.BOLD, 14));
+                cupButton.setForeground(Color.YELLOW);
             }
 
             cupPanel.add(cupButton, BorderLayout.CENTER);
             this.cupsPanel.add(cupPanel);
         }
 
-        JPanel playAgainPanel = new JPanel(new BorderLayout());
-        playAgainPanel.setOpaque(false);
-
-        WoodenButton playAgainButton = new WoodenButton("Play Again");
-        playAgainButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PubPanel.this.updateCupsPanel(false);
-                PubPanel.this.resultLabel.setText("Place a bet to start the game!");
-                PubPanel.this.resultLabel.setForeground(Color.WHITE);
-            }
-        });
-
-        playAgainPanel.add(playAgainButton, BorderLayout.CENTER);
-        PubPanel.this.cupsPanel.add(playAgainPanel);
-
-        PubPanel.this.cupsPanel.revalidate();
-        PubPanel.this.cupsPanel.repaint();
+        this.cupsPanel.revalidate();
+        this.cupsPanel.repaint();
     }
 
     /**
-     * Return to the game panel
+     * Navigates back to the main game panel.
+     * Removes this panel from the container and redisplays the parent panel.
      */
     private void returnToGame() {
         Container parent = this.getParent();

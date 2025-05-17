@@ -34,10 +34,6 @@ public class BattlePanel extends JPanel {
         this.player = player;
         this.monster = monster;
         this.parentPanel = parentPanel;
-        this.initializeUI();
-    }
-
-    private void initializeUI() {
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(40, 40, 40));
 

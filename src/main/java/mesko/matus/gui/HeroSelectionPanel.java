@@ -37,24 +37,9 @@ public class HeroSelectionPanel extends JPanel {
     private JLabel luckLabel;
     private Hero selectedHero;
 
-    /**
-     * Panel for choosing hero for player
-     */
-    private JPanel parentPanel;
 
-    /**
-     * Panel for choosing hero for player
-     */
+
     public HeroSelectionPanel() {
-        this(null);
-    }
-
-    /**
-     * Panel for choosing hero for player
-     * @param parentPanel The parent panel to return to after selection
-     */
-    public HeroSelectionPanel(JPanel parentPanel) {
-        this.parentPanel = parentPanel;
         this.heroes = new ArrayList<>();
         this.heroes.add(new Warrior());
         this.heroes.add(new Wizard());
@@ -179,11 +164,4 @@ public class HeroSelectionPanel extends JPanel {
         this.updateHeroDisplay();
     }
 
-    /**
-     * Get the currently selected hero
-     * @return Hero the selected hero
-     */
-    public Hero getSelectedHero() {
-        return this.selectedHero;
-    }
 }

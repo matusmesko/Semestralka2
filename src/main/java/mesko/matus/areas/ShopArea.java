@@ -1,6 +1,5 @@
 package mesko.matus.areas;
 
-import javax.swing.JOptionPane;
 import java.awt.Component;
 import java.awt.Rectangle;
 import mesko.matus.gui.GamePanel;
