@@ -13,11 +13,11 @@ import java.io.IOException;
  * Used for shop, dungeon, and other special areas
  */
 public class Area {
-    private Rectangle bounds;
-    private String name;
-    private Color fillColor;
-    private Color borderColor;
-    private Color textColor;
+    private final Rectangle bounds;
+    private final String name;
+    private final Color fillColor;
+    private final Color borderColor;
+    private final Color textColor;
     private BufferedImage icon;
     private String iconPath;
 

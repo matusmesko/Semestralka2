@@ -1,5 +1,8 @@
 package mesko.matus.items;
 
+/**
+ * Basic interface Item
+ */
 public interface Item {
 
     /**

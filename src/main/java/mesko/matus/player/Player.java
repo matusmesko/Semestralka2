@@ -9,6 +9,9 @@ import mesko.matus.monster.Monster;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Represents the user-controlled adventurer in the RPG.
+ */
 public class Player {
 
     private PlayerInventory inventory;
@@ -20,6 +23,12 @@ public class Player {
     private Hero hero;
     private Set<String> defeatedMonsters;
 
+    /**
+     * Creates a new player avatar pre-loaded with starter gear and currency.
+     *
+     * @param hero the hero class selected in the character-creation screen;
+     *             must be non-null
+     */
     public Player(Hero hero) {
         this.inventory = new PlayerInventory();
         this.hero = hero;

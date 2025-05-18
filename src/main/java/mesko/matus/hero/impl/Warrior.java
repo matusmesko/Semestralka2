@@ -5,6 +5,9 @@ import mesko.matus.player.Player;
 
 import java.util.Random;
 
+/**
+ * Hero Warrior his attacks are based on power
+ */
 public class Warrior extends Hero {
 
     private boolean abilityUsed;

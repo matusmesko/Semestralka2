@@ -228,18 +228,12 @@ public class PubPanel extends JPanel {
             int betAmount = Integer.parseInt(this.betAmountField.getText());
 
             if (betAmount <= 0) {
-                JOptionPane.showMessageDialog(this,
-                        "Please enter a positive bet amount",
-                        "Invalid Bet",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Please enter a positive bet amount", "Invalid Bet", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             if (betAmount > this.player.getCoins()) {
-                JOptionPane.showMessageDialog(this,
-                        "You don't have enough coins for this bet",
-                        "Insufficient Funds",
-                        JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "You don't have enough coins for this bet", "Insufficient Funds", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -253,10 +247,7 @@ public class PubPanel extends JPanel {
             this.betAmountField.setEnabled(false);
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Please enter a valid number for your bet",
-                    "Invalid Bet",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for your bet", "Invalid Bet", JOptionPane.WARNING_MESSAGE);
         }
     }
 

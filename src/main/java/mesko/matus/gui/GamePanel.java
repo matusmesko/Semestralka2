@@ -34,15 +34,15 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private int characterX = 400;
     private int characterY = 300;
-    private int characterSize = 100;
-    private int moveSpeed = 5;
+    private final int characterSize = 100;
+    private final int moveSpeed = 5;
 
-    private ShopArea shopArea;
-    private DungeonArea dungeonArea;
-    private PubArea pubArea;
+    private final ShopArea shopArea;
+    private final DungeonArea dungeonArea;
+    private final PubArea pubArea;
 
-    private int gameWidth = 800;
-    private int gameHeight = 500;
+    private final int gameWidth = 800;
+    private final int gameHeight = 500;
 
 
     /**
@@ -114,8 +114,17 @@ public class GamePanel extends JPanel implements KeyListener {
         this.drawPlayer(g2d);
     }
 
-
-
+    /**
+     * Draws the player's character image on the provided Graphics2D context.
+     *
+     * This method retrieves the player's hero image based on the hero's name, scales it to the specified
+     * character size, and then draws it at the specified coordinates. The image is centered around the
+     * character's position by adjusting the drawing coordinates.
+     *
+     * @param g2d The Graphics2D context used for drawing the player image.
+     *
+     * @throws RuntimeException if there is an error reading the image file.
+     */
     private void drawPlayer(Graphics2D g2d) {
         try {
             BufferedImage playerImage = ImageIO.read(getClass().getResourceAsStream("/" + this.player.getHero().getName().toLowerCase() + ".png"));

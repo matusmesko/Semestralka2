@@ -40,7 +40,10 @@ public class HeroSelectionPanel extends JPanel {
     private Hero selectedHero;
 
 
-
+    /**
+     * Creates a panel that lets the user browse available hero classes and pick one
+     * to start the game with.
+     */
     public HeroSelectionPanel() {
         this.heroes = new ArrayList<>();
         this.heroes.add(new Warrior(200, 50));

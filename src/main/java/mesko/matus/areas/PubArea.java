@@ -11,7 +11,7 @@ import mesko.matus.gui.GamePanel;
 public class PubArea extends Area {
     private boolean isPlayerInside = false;
     private boolean isPubOpen = false;
-    private Component parent;
+    private final Component parent;
 
     /**
      * Creates a new pub area with the specified properties
@@ -36,7 +36,7 @@ public class PubArea extends Area {
      */
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = this.isPlayerInside;
-        this.isPlayerInside = intersects(characterBounds);
+        this.isPlayerInside = this.intersects(characterBounds);
         if (this.isPlayerInside && !wasInside && !this.isPubOpen) {
             this.onPlayerEnter();
         }
@@ -49,13 +49,6 @@ public class PubArea extends Area {
      * Opens the pub dialog
      */
     private void onPlayerEnter() {
-        this.openPub();
-    }
-
-    /**
-     * Opens the pub panel
-     */
-    private void openPub() {
         this.isPubOpen = true;
         if (this.parent instanceof GamePanel) {
             ((GamePanel)this.parent).showPubPanel();

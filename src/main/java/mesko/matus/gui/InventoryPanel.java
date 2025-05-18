@@ -194,7 +194,6 @@ public class InventoryPanel extends JPanel {
                                 InventoryPanel.this.player.getInventory().removeItem(consumableItem);
                                 InventoryPanel.this.refreshPanels();
                             } else if (item instanceof WearableItem wearableItem) {
-
                                 InventoryPanel.this.player.equipItem(wearableItem);
                                 InventoryPanel.this.refreshPanels();
                             }
@@ -231,13 +230,12 @@ public class InventoryPanel extends JPanel {
                     JLabel itemLabel = new JLabel(item.getName());
                     itemLabel.setHorizontalAlignment(JLabel.CENTER);
                     itemLabel.setFont(new Font("Arial", Font.BOLD, 10));
-                    itemLabel.setForeground(Color.WHITE); // White text for better visibility
+                    itemLabel.setForeground(Color.WHITE);
                     itemLabel.setOpaque(true);
                     itemLabel.setBackground(new Color(0, 0, 0, 150));
                     panel.add(itemLabel, BorderLayout.SOUTH);
                 }
             } catch (IOException e) {
-                System.err.println("Failed to load image for item: " + item.getName());
                 JLabel itemLabel = new JLabel(item.getName());
                 itemLabel.setHorizontalAlignment(JLabel.CENTER);
                 panel.add(itemLabel, BorderLayout.CENTER);

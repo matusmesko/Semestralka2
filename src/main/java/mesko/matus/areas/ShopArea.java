@@ -11,7 +11,7 @@ import mesko.matus.gui.GamePanel;
 public class ShopArea extends Area {
     private boolean isPlayerInside = false;
     private boolean isShopOpen = false;
-    private Component parent;
+    private final Component parent;
 
     /**
      * Creates a new shop area with the specified properties
@@ -36,7 +36,7 @@ public class ShopArea extends Area {
      */
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = this.isPlayerInside;
-        this.isPlayerInside = intersects(characterBounds);
+        this.isPlayerInside = this.intersects(characterBounds);
 
         if (this.isPlayerInside && !wasInside && !this.isShopOpen) {
             this.onPlayerEnter();
@@ -50,13 +50,6 @@ public class ShopArea extends Area {
      * Opens the shop dialog
      */
     private void onPlayerEnter() {
-        this.openShop();
-    }
-
-    /**
-     * Opens the shop panel
-     */
-    private void openShop() {
         this.isShopOpen = true;
 
         if (this.parent instanceof GamePanel) {
@@ -65,7 +58,6 @@ public class ShopArea extends Area {
             this.isShopOpen = false;
         }
     }
-
 
     /**
      * Resets the shop open state so it can be reopened

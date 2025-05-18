@@ -68,7 +68,7 @@ public class DungeonPanel extends JPanel {
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         this.add(scrollPane, BorderLayout.CENTER);
 
-        WoodenButton returnButton = new WoodenButton("Return to Game");
+        WoodenButton returnButton = new WoodenButton("Return to Game", 150, 50, 15);
         returnButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

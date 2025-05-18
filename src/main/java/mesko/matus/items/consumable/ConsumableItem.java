@@ -3,6 +3,9 @@ package mesko.matus.items.consumable;
 import mesko.matus.items.Item;
 import mesko.matus.player.Player;
 
+/**
+ * interface ConsumableItem these items can player use
+ */
 public interface ConsumableItem extends Item {
 
     /**

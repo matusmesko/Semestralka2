@@ -7,19 +7,22 @@ import mesko.matus.items.wearable.WearableItemType;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Player's inventory where can player equip or unequip wearable items or store consumable items and use them
+ */
 public class PlayerInventory {
 
-    private static final int MAX_INVENTORY_SIZE = 6;
-    private Item[] items;
+    private static final int INVENTORY_SIZE = 6;
+    private final Item[] items;
     private int itemCount;
-    private WearableItem[] wearableItems;
+    private final WearableItem[] wearableItems;
 
     /**
      * Constructs a new PlayerInventory with default settings.
      * Initializes the inventory to hold up to 6 items and 3 wearable slots.
      */
     public PlayerInventory() {
-        this.items = new Item[MAX_INVENTORY_SIZE];
+        this.items = new Item[INVENTORY_SIZE];
         this.itemCount = 0;
         this.wearableItems = new WearableItem[3];
     }
@@ -29,7 +32,7 @@ public class PlayerInventory {
      * @param item The item to be added to the inventory.
      */
     public void addItem(Item item) {
-        if (this.itemCount < MAX_INVENTORY_SIZE) {
+        if (this.itemCount < INVENTORY_SIZE) {
             this.items[this.itemCount] = item;
             this.itemCount++;
         }
@@ -62,7 +65,7 @@ public class PlayerInventory {
                 for (int j = i; j < this.itemCount - 1; j++) {
                     this.items[j] = this.items[j + 1];
                 }
-                this.items[this.itemCount - 1] = null; // Clear the last position
+                this.items[this.itemCount - 1] = null;
                 this.itemCount--;
                 break;
             }
@@ -87,10 +90,10 @@ public class PlayerInventory {
 
     /**
      * Equips a wearable item from the inventory
+     *
      * @param item The wearable item to equip
-     * @return true if the item was equipped, false otherwise
      */
-    public boolean equipItem(WearableItem item) {
+    public void equipItem(WearableItem item) {
         WearableItemType type = item.getWearableItemType();
         int slotIndex = type.ordinal();
         boolean foundInInventory = false;
@@ -101,33 +104,29 @@ public class PlayerInventory {
             }
         }
         if (!foundInInventory) {
-            return false;
+            return;
         }
         if (this.wearableItems[slotIndex] != null) {
             this.unequipItem(type);
         }
         this.removeItem(item);
         this.wearableItems[slotIndex] = item;
-        return true;
     }
 
     /**
      * Unequips a wearable item of the specified type
+     *
      * @param type The type of wearable item to unequip
-     * @return The unequipped item, or null if no item was equipped
      */
-    public WearableItem unequipItem(WearableItemType type) {
+    public void unequipItem(WearableItemType type) {
         int slotIndex = type.ordinal();
         WearableItem item = this.wearableItems[slotIndex];
         if (item != null) {
             this.wearableItems[slotIndex] = null;
-            if (this.itemCount < MAX_INVENTORY_SIZE) {
+            if (this.itemCount < INVENTORY_SIZE) {
                 this.addItem(item);
-            } else {
-                return item;
             }
         }
-        return item;
     }
 
     /**
@@ -163,5 +162,13 @@ public class PlayerInventory {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns max inventory size
+     * @return max inventory size
+     */
+    public int getInventorySize() {
+        return INVENTORY_SIZE;
     }
 }

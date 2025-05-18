@@ -5,6 +5,9 @@ import mesko.matus.player.Player;
 
 import java.util.Random;
 
+/**
+ * Hero Wizard his attacks are based on intelligence
+ */
 public class Wizard extends Hero {
 
     private boolean abilityUsed;

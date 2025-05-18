@@ -3,6 +3,9 @@ package mesko.matus.items.consumable.impl;
 import mesko.matus.items.consumable.ConsumableItem;
 import mesko.matus.player.Player;
 
+/**
+ * Item HealthPotion
+ */
 public class HealthPotion implements ConsumableItem {
 
     private String name;

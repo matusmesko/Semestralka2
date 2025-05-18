@@ -2,6 +2,9 @@ package mesko.matus.hero;
 
 import mesko.matus.player.Player;
 
+/**
+ * Abstract class hero on the start players need to choose hero
+ */
 public abstract class Hero {
 
     private String name;

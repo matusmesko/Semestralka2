@@ -11,7 +11,7 @@ import mesko.matus.gui.GamePanel;
 public class DungeonArea extends Area {
     private boolean isPlayerInside = false;
     private boolean isDungeonOpen = false;
-    private Component parent;
+    private final Component parent;
 
     /**
      * Creates a new dungeon area with the specified properties
@@ -36,7 +36,7 @@ public class DungeonArea extends Area {
      */
     public boolean checkPlayerCollision(Rectangle characterBounds) {
         boolean wasInside = this.isPlayerInside;
-        this.isPlayerInside = intersects(characterBounds);
+        this.isPlayerInside = this.intersects(characterBounds);
         if (this.isPlayerInside && !wasInside && !this.isDungeonOpen) {
             this.onPlayerEnter();
         }
@@ -49,13 +49,6 @@ public class DungeonArea extends Area {
      * Opens the dungeon entrance dialog
      */
     private void onPlayerEnter() {
-        this.openDungeon();
-    }
-
-    /**
-     * Opens the dungeon panel
-     */
-    private void openDungeon() {
         this.isDungeonOpen = true;
 
         if (this.parent instanceof GamePanel) {
@@ -64,6 +57,7 @@ public class DungeonArea extends Area {
             this.isDungeonOpen = false;
         }
     }
+
 
     /**
      * Resets the dungeon open state so it can be reopened

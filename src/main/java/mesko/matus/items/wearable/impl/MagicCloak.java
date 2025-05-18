@@ -3,6 +3,9 @@ package mesko.matus.items.wearable.impl;
 import mesko.matus.items.wearable.WearableItem;
 import mesko.matus.items.wearable.WearableItemType;
 
+/**
+ * Item MagicCloak
+ */
 public class MagicCloak implements WearableItem {
 
     private String name;

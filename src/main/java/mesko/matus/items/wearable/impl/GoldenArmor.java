@@ -3,6 +3,9 @@ package mesko.matus.items.wearable.impl;
 import mesko.matus.items.wearable.WearableItem;
 import mesko.matus.items.wearable.WearableItemType;
 
+/**
+ * Item GoldenArmor
+ */
 public class GoldenArmor implements WearableItem {
 
     private String name;

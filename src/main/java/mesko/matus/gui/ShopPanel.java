@@ -100,7 +100,6 @@ public class ShopPanel extends JPanel {
         this.createShopItemsPanel();
     }
 
-
     /**
      * Initialize the items available in the shop
      */
@@ -210,29 +209,21 @@ public class ShopPanel extends JPanel {
      */
     private void buyItem(Item item) {
         int price = item.getPrize();
-
-        if (this.player.getCoins() >= price) {
-            if (this.player.getInventory().getItems().size() < 6) {
-                this.player.setCoins(this.player.getCoins() - price);
-                this.player.getInventory().addItem(item);
-                this.coinsLabel.setText(this.player.getCoins() + "");
-
-                JOptionPane.showMessageDialog(this,
-                    "You bought " + item.getName() + " for " + price + " coins!",
-                    "Purchase Successful", 
-                    JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                    "Your inventory is full! You cannot buy more items.",
-                    "Inventory Full", 
-                    JOptionPane.WARNING_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this,
-                "You don't have enough coins to buy " + item.getName() + "!",
-                "Not Enough Coins", 
-                JOptionPane.WARNING_MESSAGE);
+        if (this.player.getCoins() < price) {
+            JOptionPane.showMessageDialog(this, "You don't have enough coins to buy " + item.getName() + "!", "Not Enough Coins", JOptionPane.WARNING_MESSAGE);
+            return;
         }
+
+        if (this.player.getInventory().getItems().size() >= this.player.getInventory().getInventorySize()) {
+            JOptionPane.showMessageDialog(this, "Your inventory is full! You cannot buy more items.", "Inventory Full", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        this.player.setCoins(this.player.getCoins() - price);
+        this.player.getInventory().addItem(item);
+        this.coinsLabel.setText(this.player.getCoins() + "");
+
+        JOptionPane.showMessageDialog(this, "You bought " + item.getName() + " for " + price + " coins!", "Purchase Successful", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void sellItem(Item item) {
@@ -242,15 +233,9 @@ public class ShopPanel extends JPanel {
             this.player.setCoins(this.player.getCoins() + price);
             this.coinsLabel.setText(this.player.getCoins() + "");
             this.player.getInventory().sellItem(item);
-            JOptionPane.showMessageDialog(this,
-                    "You sold " + item.getName() + " for " + price + " coins!",
-                    "Item Sold",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You sold " + item.getName() + " for " + price + " coins!", "Item Sold", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "You do not have this item " + item.getName() + "!",
-                    "You do not have item",
-                    JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You do not have this item " + item.getName() + "!", "You do not have item", JOptionPane.WARNING_MESSAGE);
         }
     }
 

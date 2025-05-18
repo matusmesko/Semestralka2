@@ -2,6 +2,9 @@ package mesko.matus.items.wearable;
 
 import mesko.matus.items.Item;
 
+/**
+ * interface WearableItem when player is wearing them he get bonus stats
+ */
 public interface WearableItem extends Item {
 
     /**

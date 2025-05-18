@@ -30,6 +30,15 @@ public class BattlePanel extends JPanel {
     private JLabel monsterHealthLabel;
     private boolean battleEnded = false;
 
+    /**
+     * Builds a Swing panel that visualises a single turn-based battle between the
+     * player’s hero and a monster.
+     *
+     * @param player      the current player; must be non-null
+     * @param monster     the monster the hero is fighting; must be non-null
+     * @param parentPanel the parent container that will later replace this panel
+     *                    after the battle ends
+     */
     public BattlePanel(Player player, Monster monster, JPanel parentPanel) {
         this.player = player;
         this.monster = monster;
@@ -55,7 +64,6 @@ public class BattlePanel extends JPanel {
         combatantsPanel.add(monsterPanel);
 
         this.add(combatantsPanel, BorderLayout.CENTER);
-
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setOpaque(false);
@@ -93,8 +101,7 @@ public class BattlePanel extends JPanel {
 
         if (isPlayer) {
             this.playerHealthLabel = healthLabel;
-            String stat = this.player.getHero().getName().equals("Wizard") ?
-                    "Intelligence: " + this.player.getIntelligence() : "Power: " + this.player.getPower();
+            String stat = this.player.getHero().getName().equals("Wizard") ? "Intelligence: " + this.player.getIntelligence() : "Power: " + this.player.getPower();
             JLabel statLabel = new JLabel(stat, JLabel.CENTER);
             statLabel.setForeground(Color.YELLOW);
             panel.add(statLabel);
@@ -193,10 +200,7 @@ public class BattlePanel extends JPanel {
 
         this.player.defeatMonster(this.monster);
 
-        JOptionPane.showMessageDialog(this,
-                "Victory! You earned " + coins + " coins!",
-                "Battle Won",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Victory! You earned " + coins + " coins!", "Battle Won", JOptionPane.INFORMATION_MESSAGE);
 
         this.returnToDungeon();
     }
@@ -208,11 +212,7 @@ public class BattlePanel extends JPanel {
     private void playerDefeated() {
         this.battleEnded = true;
 
-        int choice = JOptionPane.showConfirmDialog(this,
-                "You were defeated! Do you want to play again?",
-                "Battle Lost",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+        int choice = JOptionPane.showConfirmDialog(this, "You were defeated! Do you want to play again?", "Battle Lost", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
         if (choice == JOptionPane.YES_OPTION) {
             this.restartGame();
@@ -249,10 +249,7 @@ public class BattlePanel extends JPanel {
      */
     private void fleeBattle() {
         if (Math.random() < 0.5) {
-            JOptionPane.showMessageDialog(this,
-                    "You fled from battle!",
-                    "Escaped",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "You fled from battle!", "Escaped", JOptionPane.INFORMATION_MESSAGE);
             this.returnToDungeon();
         } else {
             int damage = this.calculateDamage(this.monster.getPower());
