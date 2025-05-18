@@ -54,6 +54,10 @@ public class PubPanel extends JPanel {
         this.add(this.createContentPanel(), BorderLayout.CENTER);
     }
 
+    /**
+     * Creates the title panel containing the title of the pub and a return button.
+     * @return A JPanel with the title and return button.
+     */
     private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setBackground(new Color(70, 40, 10));
@@ -64,14 +68,22 @@ public class PubPanel extends JPanel {
         titleLabel.setForeground(new Color(255, 215, 0));
         titlePanel.add(titleLabel, BorderLayout.WEST);
 
-        WoodenButton returnButton = new WoodenButton("Return to Game");
-        returnButton.setFont(new Font("Arial", Font.BOLD, 18));
-        returnButton.setPreferredSize(new Dimension(200, 50));
+        WoodenButton returnButton = new WoodenButton("Return to Game", 200, 50, 18);
         returnButton.addActionListener(e -> PubPanel.this.returnToGame());
         titlePanel.add(returnButton, BorderLayout.EAST);
         return titlePanel;
     }
 
+    /**
+     * Creates the main content panel that holds the player information, game area, and betting controls.
+     *
+     * The panel uses a BorderLayout with an empty border for spacing. It includes:
+     * - Player information (north) showing the player's coin balance
+     * - Game area (center) displaying the game's result label and cups
+     * - Betting controls (south) for placing bets
+     *
+     * @return A JPanel containing the main game content.
+     */
     private JPanel createContentPanel() {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setOpaque(false);
@@ -84,6 +96,14 @@ public class PubPanel extends JPanel {
         return contentPanel;
     }
 
+    /**
+     * Creates a panel to display the player's current coin balance.
+     *
+     * The panel is centered and shows the player's coins with a bold, yellow font. It includes
+     * a JLabel that updates dynamically based on the player's coin count.
+     *
+     * @return A JPanel displaying the player's coin information.
+     */
     private JPanel createPlayerInfoPanel() {
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setOpaque(false);
@@ -97,6 +117,15 @@ public class PubPanel extends JPanel {
         return playerInfoPanel;
     }
 
+    /**
+     * Creates the game area panel that shows the game's result message and cups arrangement.
+     *
+     * The panel uses a BorderLayout with vertical spacing. It includes:
+     * - A result label (north) showing game status or instructions
+     * - A cups panel (center) displaying the cups used in the game
+     *
+     * @return A JPanel containing the game result and cups display.
+     */
     private JPanel createGameAreaPanel() {
         JPanel gameAreaPanel = new JPanel(new BorderLayout(0, 20));
         gameAreaPanel.setOpaque(false);
@@ -107,6 +136,14 @@ public class PubPanel extends JPanel {
         return gameAreaPanel;
     }
 
+    /**
+     * Creates a label to display the result of the game or instructions to the player.
+     *
+     * The label is centered with an italic, white font. It shows messages such as "Place a bet
+     * to start the game" or the outcome of the game.
+     *
+     * @return A JLabel displaying the game result or instructions.
+     */
     private JLabel createResultLabel() {
         this.resultLabel = new JLabel("Place a bet to start the game", JLabel.CENTER);
         this.resultLabel.setFont(new Font("Arial", Font.ITALIC, 20));
@@ -114,6 +151,15 @@ public class PubPanel extends JPanel {
         return this.resultLabel;
     }
 
+    /**
+     * Creates a panel to display the cups used in the game.
+     *
+     * The panel uses a GridLayout to arrange three cups horizontally with spacing. It includes
+     * an empty border for spacing and can be updated dynamically using the updateCupsPanel()
+     * method.
+     *
+     * @return A JPanel displaying the game cups.
+     */
     private JPanel createCupsPanel() {
         this.cupsPanel = new JPanel(new GridLayout(1, 3, 30, 0));
         this.cupsPanel.setOpaque(false);
@@ -122,6 +168,16 @@ public class PubPanel extends JPanel {
         return this.cupsPanel;
     }
 
+    /**
+     * Creates the betting control panel that allows players to place bets.
+     *
+     * The panel includes:
+     * - A label prompting the player for their bet amount
+     * - A text field for entering the bet amount (defaults to 10)
+     * - A "Place Bet" button that triggers the placeBet() method
+     *
+     * @return A JPanel containing the betting controls.
+     */
     private JPanel createBettingPanel() {
         JPanel bettingPanel = new JPanel();
         bettingPanel.setOpaque(false);
@@ -141,6 +197,13 @@ public class PubPanel extends JPanel {
         return betLabel;
     }
 
+    /**
+     * Creates a label prompting the player to enter their bet amount.
+     *
+     * The label uses a plain, white font and is part of the betting control panel.
+     *
+     * @return A JLabel prompting for the bet amount.
+     */
     private JTextField createBetField() {
         this.betAmountField = new JTextField(6);
         this.betAmountField.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -150,9 +213,7 @@ public class PubPanel extends JPanel {
     }
 
     private WoodenButton createPlaceBetButton() {
-        WoodenButton placeBetButton = new WoodenButton("Place Bet");
-        placeBetButton.setFont(new Font("Arial", Font.BOLD, 16));
-        placeBetButton.setPreferredSize(new Dimension(150, 40));
+        WoodenButton placeBetButton = new WoodenButton("Place Bet", 150, 40, 16);
         placeBetButton.addActionListener(e -> PubPanel.this.placeBet());
         return placeBetButton;
     }

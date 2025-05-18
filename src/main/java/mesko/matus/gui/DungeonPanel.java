@@ -66,7 +66,7 @@ public class DungeonPanel extends JPanel {
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        add(scrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
 
         WoodenButton returnButton = new WoodenButton("Return to Game");
         returnButton.addActionListener(new ActionListener() {

@@ -63,7 +63,7 @@ public class BattlePanel extends JPanel {
         WoodenButton attackButton = new WoodenButton("Attack", 180, 80, 18);
         attackButton.addActionListener(this::handleAttack);
 
-        WoodenButton fleeButton = new WoodenButton("Flee",180, 80, 18);
+        WoodenButton fleeButton = new WoodenButton("Flee", 180, 80, 18);
         fleeButton.addActionListener(this::handleFlee);
 
         buttonPanel.add(attackButton);
@@ -277,7 +277,7 @@ public class BattlePanel extends JPanel {
             parent.repaint();
             this.parentPanel.requestFocusInWindow();
             if (this.parentPanel instanceof DungeonPanel) {
-                ((DungeonPanel) this.parentPanel).refreshPanels();
+                ((DungeonPanel)this.parentPanel).refreshPanels();
             }
         }
     }
