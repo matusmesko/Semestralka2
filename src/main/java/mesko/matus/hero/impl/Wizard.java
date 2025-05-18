@@ -8,11 +8,20 @@ import java.util.Random;
 public class Wizard extends Hero {
 
     private boolean abilityUsed;
+    private String name;
+    private int health;
+    private int intelligence;
+    private int luck;
+
 
     /**
-     * Constructs a Wizard with the ability unused.
+     * Constructs a Wizard.
      */
-    public Wizard() {
+    public Wizard(int health, int intelligence, int luck) {
+        this.name = "Wizard";
+        this.health = health;
+        this.intelligence = intelligence;
+        this.luck = luck;
         this.abilityUsed = false;
     }
 
@@ -22,7 +31,7 @@ public class Wizard extends Hero {
      */
     @Override
     public String getName() {
-        return "Wizard";
+        return this.name;
     }
 
     /**
@@ -31,7 +40,7 @@ public class Wizard extends Hero {
      */
     @Override
     public int getHealth() {
-        return 100;
+        return this.health;
     }
 
     /**
@@ -40,7 +49,7 @@ public class Wizard extends Hero {
      */
     @Override
     public int getIntelligence() {
-        return 20;
+        return this.intelligence;
     }
 
     /**
@@ -49,7 +58,7 @@ public class Wizard extends Hero {
      */
     @Override
     public int getLuck() {
-        return 2;
+        return this.luck;
     }
 
     /**

@@ -60,16 +60,17 @@ public class BattlePanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonPanel.setOpaque(false);
 
-        WoodenButton attackButton = new WoodenButton("Attack");
+        WoodenButton attackButton = new WoodenButton("Attack", 180, 80, 18);
         attackButton.addActionListener(this::handleAttack);
 
-        WoodenButton fleeButton = new WoodenButton("Flee");
+        WoodenButton fleeButton = new WoodenButton("Flee",180, 80, 18);
         fleeButton.addActionListener(this::handleFlee);
 
         buttonPanel.add(attackButton);
         buttonPanel.add(fleeButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
+
 
     /**
      * Creates a panel for displaying character information (player or monster)
@@ -110,8 +111,6 @@ public class BattlePanel extends JPanel {
 
     /**
      * Handles the attack action when the attack button is clicked
-     * 
-     * @param e The action event
      */
     private void handleAttack(ActionEvent e) {
         if (this.battleEnded) {
@@ -142,8 +141,6 @@ public class BattlePanel extends JPanel {
 
     /**
      * Handles the flee action when the flee button is clicked
-     * 
-     * @param e The action event
      */
     private void handleFlee(ActionEvent e) {
         if (this.battleEnded) {
@@ -279,6 +276,9 @@ public class BattlePanel extends JPanel {
             parent.revalidate();
             parent.repaint();
             this.parentPanel.requestFocusInWindow();
+            if (this.parentPanel instanceof DungeonPanel) {
+                ((DungeonPanel) this.parentPanel).refreshPanels();
+            }
         }
     }
 }

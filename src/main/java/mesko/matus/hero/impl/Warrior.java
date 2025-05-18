@@ -8,11 +8,18 @@ import java.util.Random;
 public class Warrior extends Hero {
 
     private boolean abilityUsed;
+    private String name;
+    private int health;
+    private int power;
+
 
     /**
-     * Constructs a Warrior with the ability unused.
+     * Constructs a Warrior.
      */
-    public Warrior() {
+    public Warrior(int health, int power) {
+        this.name = "Warrior";
+        this.health = health;
+        this.power = power;
         this.abilityUsed = false;
     }
 
@@ -22,7 +29,7 @@ public class Warrior extends Hero {
      */
     @Override
     public String getName() {
-        return "Warrior";
+        return this.name;
     }
 
     /**
@@ -31,7 +38,7 @@ public class Warrior extends Hero {
      */
     @Override
     public int getHealth() {
-        return 200;
+        return this.health;
     }
 
     /**
@@ -40,7 +47,7 @@ public class Warrior extends Hero {
      */
     @Override
     public int getPower() {
-        return 50;
+        return this.power;
     }
 
     /**

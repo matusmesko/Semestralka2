@@ -235,7 +235,7 @@ public class ShopPanel extends JPanel {
         }
     }
 
-    public void sellItem(Item item) {
+    private void sellItem(Item item) {
         int price = item.getPrize() / 2;
 
         if (this.player.getInventory().hasItem(item)) {

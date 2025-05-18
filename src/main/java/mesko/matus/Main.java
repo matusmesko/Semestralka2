@@ -18,7 +18,6 @@ import mesko.matus.ui.WoodenButton;
 
 public class Main {
 
-    private static final String GAME_TITLE = "Magic Adventure";
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 700;
 
@@ -37,7 +36,7 @@ public class Main {
      * will appear
      */
     private static void gameFrame() {
-        JFrame frame = new JFrame(GAME_TITLE);
+        JFrame frame = new JFrame("Shakes and Fridget");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setLocationRelativeTo(null);
@@ -48,7 +47,7 @@ public class Main {
         JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel titleLabel = new JLabel(GAME_TITLE);
+        JLabel titleLabel = new JLabel("Shakes and Fridget");
         titleLabel.setFont(new Font("Medieval", Font.BOLD, 48));
         titleLabel.setForeground(new Color(47, 81, 0));
         titlePanel.add(titleLabel);

@@ -30,8 +30,8 @@ public class PubPanel extends JPanel {
     private JLabel resultLabel;
 
     private int diceUnderCup;
-    private boolean gameInProgress = false;
-    private int currentBet = 0;
+    private boolean gameStarted;
+    private int currentBet;
 
     /**
      * Constructs a new PubPanel instance with the specified player and parent panel.
@@ -43,11 +43,18 @@ public class PubPanel extends JPanel {
     public PubPanel(Player player, JPanel parentPanel) {
         this.player = player;
         this.parentPanel = parentPanel;
+        this.currentBet = 0;
+        this.gameStarted = false;
 
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(100, 70, 30));
         this.setPreferredSize(new Dimension(800, 700));
 
+        this.add(this.createTitlePanel(), BorderLayout.NORTH);
+        this.add(this.createContentPanel(), BorderLayout.CENTER);
+    }
+
+    private JPanel createTitlePanel() {
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setBackground(new Color(70, 40, 10));
         titlePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -62,63 +69,92 @@ public class PubPanel extends JPanel {
         returnButton.setPreferredSize(new Dimension(200, 50));
         returnButton.addActionListener(e -> PubPanel.this.returnToGame());
         titlePanel.add(returnButton, BorderLayout.EAST);
+        return titlePanel;
+    }
 
-        this.add(titlePanel, BorderLayout.NORTH);
-
+    private JPanel createContentPanel() {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setOpaque(false);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
+        contentPanel.add(this.createPlayerInfoPanel(), BorderLayout.NORTH);
+        contentPanel.add(this.createGameAreaPanel(), BorderLayout.CENTER);
+        contentPanel.add(this.createBettingPanel(), BorderLayout.SOUTH);
+
+        return contentPanel;
+    }
+
+    private JPanel createPlayerInfoPanel() {
         JPanel playerInfoPanel = new JPanel();
         playerInfoPanel.setOpaque(false);
         playerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
-        this.playerCoinsLabel = new JLabel("Your coins: " + player.getCoins(), JLabel.CENTER);
+        this.playerCoinsLabel = new JLabel("Your coins: " + this.player.getCoins(), JLabel.CENTER);
         this.playerCoinsLabel.setFont(new Font("Arial", Font.BOLD, 24));
         this.playerCoinsLabel.setForeground(Color.YELLOW);
-        playerInfoPanel.add(this.playerCoinsLabel);
-        contentPanel.add(playerInfoPanel, BorderLayout.NORTH);
 
+        playerInfoPanel.add(this.playerCoinsLabel);
+        return playerInfoPanel;
+    }
+
+    private JPanel createGameAreaPanel() {
         JPanel gameAreaPanel = new JPanel(new BorderLayout(0, 20));
         gameAreaPanel.setOpaque(false);
 
-        this.resultLabel = new JLabel("Place a bet to start the game!", JLabel.CENTER);
+        gameAreaPanel.add(this.createResultLabel(), BorderLayout.NORTH);
+        gameAreaPanel.add(this.createCupsPanel(), BorderLayout.CENTER);
+
+        return gameAreaPanel;
+    }
+
+    private JLabel createResultLabel() {
+        this.resultLabel = new JLabel("Place a bet to start the game", JLabel.CENTER);
         this.resultLabel.setFont(new Font("Arial", Font.ITALIC, 20));
         this.resultLabel.setForeground(Color.WHITE);
-        gameAreaPanel.add(this.resultLabel, BorderLayout.NORTH);
+        return this.resultLabel;
+    }
 
+    private JPanel createCupsPanel() {
         this.cupsPanel = new JPanel(new GridLayout(1, 3, 30, 0));
         this.cupsPanel.setOpaque(false);
         this.cupsPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         this.updateCupsPanel(false);
-        gameAreaPanel.add(this.cupsPanel, BorderLayout.CENTER);
+        return this.cupsPanel;
+    }
 
-        contentPanel.add(gameAreaPanel, BorderLayout.CENTER);
-
+    private JPanel createBettingPanel() {
         JPanel bettingPanel = new JPanel();
         bettingPanel.setOpaque(false);
         bettingPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
+        bettingPanel.add(this.createBetLabel());
+        bettingPanel.add(this.createBetField());
+        bettingPanel.add(this.createPlaceBetButton());
+
+        return bettingPanel;
+    }
+
+    private JLabel createBetLabel() {
         JLabel betLabel = new JLabel("Your bet: ");
         betLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         betLabel.setForeground(Color.WHITE);
-        bettingPanel.add(betLabel);
+        return betLabel;
+    }
 
+    private JTextField createBetField() {
         this.betAmountField = new JTextField(6);
         this.betAmountField.setFont(new Font("Arial", Font.PLAIN, 18));
         this.betAmountField.setText("10");
         this.betAmountField.setHorizontalAlignment(JTextField.CENTER);
-        bettingPanel.add(this.betAmountField);
+        return this.betAmountField;
+    }
 
+    private WoodenButton createPlaceBetButton() {
         WoodenButton placeBetButton = new WoodenButton("Place Bet");
         placeBetButton.setFont(new Font("Arial", Font.BOLD, 16));
         placeBetButton.setPreferredSize(new Dimension(150, 40));
         placeBetButton.addActionListener(e -> PubPanel.this.placeBet());
-        bettingPanel.add(placeBetButton);
-
-        contentPanel.add(bettingPanel, BorderLayout.SOUTH);
-
-        this.add(contentPanel, BorderLayout.CENTER);
+        return placeBetButton;
     }
 
     /**
@@ -132,7 +168,7 @@ public class PubPanel extends JPanel {
 
             if (betAmount <= 0) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter a positive bet amount.",
+                        "Please enter a positive bet amount",
                         "Invalid Bet",
                         JOptionPane.WARNING_MESSAGE);
                 return;
@@ -140,24 +176,24 @@ public class PubPanel extends JPanel {
 
             if (betAmount > this.player.getCoins()) {
                 JOptionPane.showMessageDialog(this,
-                        "You don't have enough coins for this bet.",
+                        "You don't have enough coins for this bet",
                         "Insufficient Funds",
                         JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
             this.currentBet = betAmount;
-            this.gameInProgress = true;
+            this.gameStarted = true;
             Random random = new Random();
             this.diceUnderCup = random.nextInt(3);
             this.updateCupsPanel(true);
-            this.resultLabel.setText("Select a cup to guess where the dice is!");
+            this.resultLabel.setText("Select a cup to guess where the dice is");
             this.resultLabel.setForeground(Color.WHITE);
             this.betAmountField.setEnabled(false);
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
-                    "Please enter a valid number for your bet.",
+                    "Please enter a valid number for your bet",
                     "Invalid Bet",
                     JOptionPane.WARNING_MESSAGE);
         }
@@ -212,24 +248,24 @@ public class PubPanel extends JPanel {
      * @param cupIndex The index of the selected cup (0-based).
      */
     private void selectCup(int cupIndex) {
-        if (!this.gameInProgress) {
+        if (!this.gameStarted) {
             return;
         }
 
         boolean won = (cupIndex == this.diceUnderCup);
 
         if (won) {
-            this.player.setCoins(this.player.getCoins() + this.currentBet);
-            this.resultLabel.setText("You won " + this.currentBet + " coins! The dice was under Cup " + (this.diceUnderCup + 1) + "!");
+            this.player.setCoins(this.player.getCoins() + this.currentBet * 2);
+            this.resultLabel.setText("You won " + this.currentBet * 2 + " coins");
             this.resultLabel.setForeground(Color.GREEN);
         } else {
             this.player.setCoins(this.player.getCoins() - this.currentBet);
-            this.resultLabel.setText("You lost " + this.currentBet + " coins! The dice was under Cup " + (this.diceUnderCup + 1) + ".");
+            this.resultLabel.setText("You lost " + this.currentBet + " coins");
             this.resultLabel.setForeground(Color.RED);
         }
 
         this.playerCoinsLabel.setText("Your coins: " + this.player.getCoins());
-        this.gameInProgress = false;
+        this.gameStarted = false;
         this.currentBet = 0;
         this.revealCups();
         this.betAmountField.setEnabled(true);

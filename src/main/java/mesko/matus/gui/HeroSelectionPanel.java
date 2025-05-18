@@ -5,11 +5,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -41,14 +37,14 @@ public class HeroSelectionPanel extends JPanel {
 
     public HeroSelectionPanel() {
         this.heroes = new ArrayList<>();
-        this.heroes.add(new Warrior());
-        this.heroes.add(new Wizard());
-
+        this.heroes.add(new Warrior(200, 50));
+        this.heroes.add(new Wizard(100, 30, 5));
 
         this.setLayout(new BorderLayout());
+        this.setBackground(new Color(234, 215, 168));
+        this.setBorder(BorderFactory.createEmptyBorder(0, 25, 25, 25));
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setOpaque(false);
-
         this.heroImageLabel = new JLabel(new ImageIcon(getClass().getResource("/warrior.png")));
         this.heroImageLabel.setHorizontalAlignment(JLabel.CENTER);
         imagePanel.add(this.heroImageLabel, BorderLayout.CENTER);
@@ -125,9 +121,6 @@ public class HeroSelectionPanel extends JPanel {
         this.updateHeroDisplay();
     }
 
-
-
-
     /**
      * Updates hero image and statistics
      */
@@ -146,7 +139,6 @@ public class HeroSelectionPanel extends JPanel {
         this.heroImageLabel.setIcon(new ImageIcon(Utils.resizeImage(heroIcon, img, 200, 200)));
         this.heroImageLabel.setText("");
     }
-
 
     /**
      * Navigate to the next hero in the list

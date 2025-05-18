@@ -217,4 +217,18 @@ public class DungeonPanel extends JPanel {
             this.parentPanel.requestFocusInWindow();
         }
     }
+
+    /**
+     * Refreshes all panels to reflect the current state
+     */
+    public void refreshPanels() {
+        Container parent = this.getParent();
+        if (parent != null) {
+            parent.remove(this);
+            DungeonPanel newPanel = new DungeonPanel(this.player, this.parentPanel);
+            parent.add(newPanel, BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
+        }
+    }
 }
